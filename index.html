@@ -1,114 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reelocash</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <div class="auth-shell">
-    <div class="auth-card">
-      <div class="brand-badge">Reelocash</div>
-      <h1>Welcome Back</h1>
-      <p class="muted">Login or create your account</p>
 
-      <div class="tabs">
-        <button class="tab active" id="loginTab">Login</button>
-        <button class="tab" id="signupTab">Signup</button>
-      </div>
+<div class="container">
+  <h2>💰 Reelocash</h2>
+  <p>Login or create your account</p>
 
-      <div id="loginForm">
-        <input id="loginEmail" type="email" placeholder="Email" />
-        <input id="loginPassword" type="password" placeholder="Password" />
-        <button class="btn-primary" id="loginBtn">Login</button>
-      </div>
-
-      <div id="signupForm" class="hidden">
-        <input id="signupName" type="text" placeholder="Full Name" />
-        <input id="signupEmail" type="email" placeholder="Email" />
-        <input id="signupPassword" type="password" placeholder="Password" />
-        <button class="btn-primary" id="signupBtn">Create Account</button>
-      </div>
-
-      <p id="authMsg" class="msg"></p>
-    </div>
+  <div class="btns">
+    <button onclick="showLogin()">Login</button>
+    <button onclick="showSignup()">Signup</button>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
-  <script>
-    const loginTab = document.getElementById("loginTab");
-    const signupTab = document.getElementById("signupTab");
-    const loginForm = document.getElementById("loginForm");
-    const signupForm = document.getElementById("signupForm");
-    const authMsg = document.getElementById("authMsg");
+  <!-- SIGNUP -->
+  <div id="signupBox">
+    <input type="text" id="name" placeholder="Name"><br>
+    <input type="email" id="email" placeholder="Email"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="signup()">Create Account</button>
+  </div>
 
-    loginTab.onclick = () => {
-      loginTab.classList.add("active");
-      signupTab.classList.remove("active");
-      loginForm.classList.remove("hidden");
-      signupForm.classList.add("hidden");
-      authMsg.textContent = "";
-    };
+  <!-- LOGIN -->
+  <div id="loginBox" style="display:none;">
+    <input type="email" id="loginEmail" placeholder="Email"><br>
+    <input type="password" id="loginPassword" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+  </div>
 
-    signupTab.onclick = () => {
-      signupTab.classList.add("active");
-      loginTab.classList.remove("active");
-      signupForm.classList.remove("hidden");
-      loginForm.classList.add("hidden");
-      authMsg.textContent = "";
-    };
+  <p id="msg"></p>
+</div>
 
-    document.getElementById("signupBtn").onclick = async () => {
-      const name = document.getElementById("signupName").value.trim();
-      const email = document.getElementById("signupEmail").value.trim();
-      const password = document.getElementById("signupPassword").value.trim();
 
-      if (!name || !email || !password) {
-        authMsg.textContent = "Please fill all fields.";
-        return;
-      }
+<!-- 🔥 Firebase Scripts (IMPORTANT ORDER) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-      try {
-        const cred = await auth.createUserWithEmailAndPassword(email, password);
-        await db.collection("users").doc(cred.user.uid).set({
-          name,
-          email,
-          role: "user",
-          wallet: 0,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        window.location.href = "dashboard.html";
-      } catch (e) {
-        authMsg.textContent = e.message;
-      }
-    };
+<!-- 🔥 Tumhara config -->
+<script src="firebase-config.js"></script>
 
-    document.getElementById("loginBtn").onclick = async () => {
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
 
-      try {
-        await auth.signInWithEmailAndPassword(email, password);
-        window.location.href = "dashboard.html";
-      } catch (e) {
-        authMsg.textContent = e.message;
-      }
-    };
+<script>
+// Toggle UI
+function showLogin(){
+  document.getElementById("loginBox").style.display="block";
+  document.getElementById("signupBox").style.display="none";
+}
 
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) return;
-      const userDoc = await db.collection("users").doc(user.uid).get();
-      const userData = userDoc.data();
-      if (userData?.role === "admin") {
-        window.location.href = "admin.html";
-      } else {
-        window.location.href = "dashboard.html";
-      }
+function showSignup(){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("signupBox").style.display="block";
+}
+
+
+// SIGNUP
+function signup(){
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+  .then((userCredential)=>{
+    let user = userCredential.user;
+
+    // Firestore me save
+    db.collection("users").doc(user.uid).set({
+      name: name,
+      email: email,
+      role: "user",
+      wallet: 0
     });
-  </script>
+
+    document.getElementById("msg").innerText="Signup Success ✅";
+
+    setTimeout(()=>{
+      window.location.href="dashboard.html";
+    },1500);
+
+  })
+  .catch(err=>{
+    document.getElementById("msg").innerText=err.message;
+  });
+}
+
+
+// LOGIN
+function login(){
+  let email = document.getElementById("loginEmail").value;
+  let password = document.getElementById("loginPassword").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+  .then(()=>{
+    document.getElementById("msg").innerText="Login Success ✅";
+
+    setTimeout(()=>{
+      window.location.href="dashboard.html";
+    },1000);
+  })
+  .catch(err=>{
+    document.getElementById("msg").innerText=err.message;
+  });
+}
+</script>
+
 </body>
 </html>
