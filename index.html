@@ -1,202 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reelocash</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Reelocash OTP Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div class="container">
-    <h2>💰 Reelocash</h2>
-    <p>Login or create your account</p>
+<div class="container">
+  <h2>💰 Reelocash</h2>
+  <p>Login with Mobile OTP</p>
 
-    <div class="btns">
-      <button type="button" id="showLoginBtn">Login</button>
-      <button type="button" id="showSignupBtn">Signup</button>
-    </div>
+  <input type="text" id="phone" placeholder="+91XXXXXXXXXX"><br>
+  
+  <div id="recaptcha-container"></div>
 
-    <div id="signupBox">
-      <input type="text" id="name" placeholder="Name" />
-      <br />
-      <input type="email" id="email" placeholder="Email" />
-      <br />
-      <input type="password" id="password" placeholder="Password" />
-      <br />
-      <button type="button" id="signupBtn">Create Account</button>
-    </div>
+  <button onclick="sendOTP()">Send OTP</button>
 
-    <div id="loginBox" style="display:none;">
-      <input type="email" id="loginEmail" placeholder="Email" />
-      <br />
-      <input type="password" id="loginPassword" placeholder="Password" />
-      <br />
-      <button type="button" id="loginBtn">Login</button>
-    </div>
+  <br><br>
 
-    <p id="msg"></p>
-  </div>
+  <input type="text" id="otp" placeholder="Enter OTP"><br>
+  <button onclick="verifyOTP()">Verify OTP</button>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
-
-  <script>
-    const signupBox = document.getElementById("signupBox");
-    const loginBox = document.getElementById("loginBox");
-    const msg = document.getElementById("msg");
-
-    document.getElementById("showLoginBtn").addEventListener("click", function () {
-      loginBox.style.display = "block";
-      signupBox.style.display = "none";
-      msg.innerText = "";
-    });
-
-    document.getElementById("showSignupBtn").addEventListener("click", function () {
-      loginBox.style.display = "none";
-      signupBox.style.display = "block";
-      msg.innerText = "";
-    });
-
-    document.getElementById("signupBtn").addEventListener("click", async function () {
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      if (!name || !email || !password) {
-        msg.innerText = "Please fill all signup fields.";
-        return;
-      }
-
-      if (typeof auth === "undefined" || typeof db === "undefined") {
-        msg.innerText = "Firebase not loaded. Check firebase-config.js";
-        return;
-      }
-
-      try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-
-        await db.collection("users").doc(user.uid).set({
-          name: name,
-          email: email,
-          role: "user",
-          wallet: 0
-        });
-
-        msg.innerText = "Signup Success ✅";
-
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 1000);
-      } catch (err) {
-        msg.innerText = err.message;
-      }
-    });
-
-    document.getElementById("loginBtn").addEventListener("click", async function () {
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
-
-      if (!email || !password) {
-        msg.innerText = "Please fill login email and password.";
-        return;
-      }
-
-      if (typeof auth === "undefined") {
-        msg.innerText = "Firebase not loaded. Check firebase-config.js";
-        return;
-      }
-
-      try {
-        await auth.signInWithEmailAndPassword(email, password);
-        msg.innerText = "Login Success ✅";
-
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 1000);
-      } catch (err) {
-        msg.innerText = err.message;
-      }
-    });
-  </script>
-
-</body>
-</html>
+  <p id="msg"></p>
+</div>
 
 
-<!-- 🔥 Firebase Scripts (IMPORTANT ORDER) -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<!-- 🔥 Tumhara config -->
 <script src="firebase-config.js"></script>
 
-
 <script>
-// Toggle UI
-function showLogin(){
-  document.getElementById("loginBox").style.display="block";
-  document.getElementById("signupBox").style.display="none";
-}
 
-function showSignup(){
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("signupBox").style.display="block";
-}
+let confirmationResult;
 
+// CAPTCHA
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+  size: 'normal'
+});
 
-// SIGNUP
-function signup(){
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+// SEND OTP
+function sendOTP(){
+  let phone = document.getElementById("phone").value;
 
-  auth.createUserWithEmailAndPassword(email, password)
-  .then((userCredential)=>{
-    let user = userCredential.user;
-
-    // Firestore me save
-    db.collection("users").doc(user.uid).set({
-      name: name,
-      email: email,
-      role: "user",
-      wallet: 0
-    });
-
-    document.getElementById("msg").innerText="Signup Success ✅";
-
-    setTimeout(()=>{
-      window.location.href="dashboard.html";
-    },1500);
-
+  auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
+  .then(function(result){
+    confirmationResult = result;
+    document.getElementById("msg").innerText="OTP Sent ✅";
   })
-  .catch(err=>{
-    document.getElementById("msg").innerText=err.message;
+  .catch(function(error){
+    document.getElementById("msg").innerText=error.message;
   });
 }
 
 
-// LOGIN
-function login(){
-  let email = document.getElementById("loginEmail").value;
-  let password = document.getElementById("loginPassword").value;
+// VERIFY OTP
+function verifyOTP(){
+  let code = document.getElementById("otp").value;
 
-  auth.signInWithEmailAndPassword(email, password)
-  .then(()=>{
+  confirmationResult.confirm(code)
+  .then(function(result){
+    let user = result.user;
+
+    // Firestore me save
+    db.collection("users").doc(user.uid).set({
+      phone: user.phoneNumber,
+      wallet: 0,
+      role: "user"
+    }, {merge:true});
+
     document.getElementById("msg").innerText="Login Success ✅";
 
     setTimeout(()=>{
       window.location.href="dashboard.html";
     },1000);
+
   })
-  .catch(err=>{
-    document.getElementById("msg").innerText=err.message;
+  .catch(function(error){
+    document.getElementById("msg").innerText="Wrong OTP ❌";
   });
 }
+
 </script>
 
 </body>
