@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reelocash Admin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-wrap">
+    <div class="topbar">
+      <div>
+        <div class="brand-badge">Reelocash</div>
+        <h2>Admin Panel</h2>
+      </div>
+      <button class="btn-secondary" id="logoutBtn">Logout</button>
+    </div>
+
+    <div class="main-grid single-col">
+      <div class="panel">
+        <h3>Pending Tasks</h3>
+        <div id="tasksBox" class="history-list">Loading...</div>
+      </div>
+
+      <div class="panel">
+        <h3>Withdrawal Requests</h3>
+        <div id="withdrawBox" class="history-list">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      const userData = userDoc.data();
+
+      if (!userData || userData.role !== "admin") {
+        alert("Not authorized");
+        window.location.href = "dashboard.html";
+        return;
+      }
+
+      loadTasks();
+      loadWithdrawals();
+    });
+
+    async function loadTasks() {
+      const box = document.getElementById("tasksBox");
+      const snap = await db.collection("tasks").orderBy("createdAt", "desc").get();
+
+      if (snap.empty) {
+        box.innerHTML = "No tasks found.";
+        return;
+      }
+
+      let html = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+        html += `
+          <div class="admin-item">
+            <strong>${d.title || "Untitled Task"}</strong>
+            <div>${d.userEmail || d.userId}</div>
+            <div>Proof: ${d.proof || "-"}</div>
+            <div>Reward: ₹${d.reward || 0}</div>
+            <div>Status: ${d.status || "pending"}</div>
+            <div class="admin-actions">
+              <button class="btn-primary" onclick="approveTask('${doc.id}','${d.userId}',${d.reward || 0})">Approve</button>
+              <button class="btn-danger" onclick="rejectTask('${doc.id}')">Reject</button>
+            </div>
+          </div>
+        `;
+      });
+
+      box.innerHTML = html;
+    }
+
+    async function approveTask(taskId, userId, reward) {
+      const taskRef = db.collection("tasks").doc(taskId);
+      const userRef = db.collection("users").doc(userId);
+
+      await db.runTransaction(async (t) => {
+        const userDoc = await t.get(userRef);
+        const taskDoc = await t.get(taskRef);
+        const userData = userDoc.data();
+        const taskData = taskDoc.data();
+
+        if (taskData.status === "approved") throw new Error("Already approved");
+
+        t.update(userRef, { wallet: (userData.wallet || 0) + reward });
+        t.update(taskRef, {
+          status: "approved",
+          adminMessage: "Verified successfully"
+        });
+      });
+
+      alert("Verified successfully");
+      loadTasks();
+    }
+
+    async function rejectTask(taskId) {
+      await db.collection("tasks").doc(taskId).update({
+        status: "rejected",
+        adminMessage: "Task rejected"
+      });
+      loadTasks();
+    }
+
+    async function loadWithdrawals() {
+      const box = document.getElementById("withdrawBox");
+      const snap = await db.collection("withdrawals").orderBy("createdAt", "desc").get();
+
+      if (snap.empty) {
+        box.innerHTML = "No withdrawal requests found.";
+        return;
+      }
+
+      let html = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+        html += `
+          <div class="admin-item">
+            <strong>${d.userEmail || d.userId}</strong>
+            <div>UPI: ${d.upiId || "-"}</div>
+            <div>Amount: ₹${d.amount || 0}</div>
+            <div>Status: ${d.status || "pending"}</div>
+            <div class="admin-actions">
+              <button class="btn-secondary" onclick="markProcessing('${doc.id}')">Processing</button>
+              <button class="btn-primary" onclick="markCompleted('${doc.id}','${d.userId}',${d.amount || 0})">Completed</button>
+              <button class="btn-danger" onclick="rejectWithdrawal('${doc.id}')">Reject</button>
+            </div>
+          </div>
+        `;
+      });
+
+      box.innerHTML = html;
+    }
+
+    async function markProcessing(withdrawId) {
+      await db.collection("withdrawals").doc(withdrawId).update({
+        status: "processing",
+        adminMessage: "Your withdrawal request is processing, please wait 5 or 10 minutes"
+      });
+      loadWithdrawals();
+    }
+
+    async function markCompleted(withdrawId, userId, amount) {
+      const withdrawRef = db.collection("withdrawals").doc(withdrawId);
+      const userRef = db.collection("users").doc(userId);
+
+      await db.runTransaction(async (t) => {
+        const userDoc = await t.get(userRef);
+        const withdrawDoc = await t.get(withdrawRef);
+        const userData = userDoc.data();
+        const withdrawData = withdrawDoc.data();
+
+        if (withdrawData.status === "completed") throw new Error("Already completed");
+        if ((userData.wallet || 0) < amount) throw new Error("Insufficient wallet");
+
+        t.update(userRef, { wallet: (userData.wallet || 0) - amount });
+        t.update(withdrawRef, {
+          status: "completed",
+          adminMessage: "Withdrawal successfully please check your UPI"
+        });
+      });
+
+      loadWithdrawals();
+    }
+
+    async function rejectWithdrawal(withdrawId) {
+      await db.collection("withdrawals").doc(withdrawId).update({
+        status: "rejected",
+        adminMessage: "Withdrawal rejected"
+      });
+      loadWithdrawals();
+    }
+
+    document.getElementById("logoutBtn").onclick = () => {
+      auth.signOut().then(() => window.location.href = "index.html");
+    };
+  </script>
+</body>
+</html>
