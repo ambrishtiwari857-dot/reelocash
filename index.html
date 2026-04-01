@@ -1,115 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reelocash</title>
 </head>
 <body>
 
-  <h1>Reelocash</h1>
+<h1>💰 Reelocash</h1>
 
-  <h2>Login</h2>
-  <input type="email" id="email" placeholder="Email"><br><br>
-  <input type="password" id="password" placeholder="Password"><br><br>
-  <button onclick="signup()">Sign Up</button>
-  <button onclick="login()">Login</button>
+<h2>Signup</h2>
+<input type="text" id="name" placeholder="Name"><br><br>
+<input type="email" id="email" placeholder="Email"><br><br>
+<input type="password" id="password" placeholder="Password"><br><br>
+<button onclick="signup()">Signup</button>
 
-  <hr>
+<hr>
 
-  <h2>Dashboard</h2>
-  <p>Balance: ₹<span id="balance">0</span></p>
-  <button onclick="earn()">Earn ₹5</button>
+<h2>🎬 Watch Reels & Earn ₹5</h2>
 
-  <hr>
+<!-- ALL 16 REELS -->
+<a href="https://www.instagram.com/reel/DLQ62B0S4Gu/" target="_blank">Reel 1</a><br><br>
+<a href="https://www.instagram.com/reel/DLSa4qgyFcK/" target="_blank">Reel 2</a><br><br>
+<a href="https://www.instagram.com/reel/DV30l4JTwdR/" target="_blank">Reel 3</a><br><br>
+<a href="https://www.instagram.com/reel/DV7cmFYxn9U/" target="_blank">Reel 4</a><br><br>
+<a href="https://www.instagram.com/reel/DWA2MyGkQtQ/" target="_blank">Reel 5</a><br><br>
+<a href="https://www.instagram.com/reel/DWDYV3mkduC/" target="_blank">Reel 6</a><br><br>
+<a href="https://www.instagram.com/reel/DWD0typEaM7/" target="_blank">Reel 7</a><br><br>
+<a href="https://www.instagram.com/reel/DWIy8vPEZfq/" target="_blank">Reel 8</a><br><br>
+<a href="https://www.instagram.com/reel/DWOp86DEZlS/" target="_blank">Reel 9</a><br><br>
+<a href="https://www.instagram.com/reel/DWRRPu0iBEp/" target="_blank">Reel 10</a><br><br>
+<a href="https://www.instagram.com/reel/DWUOP0gE6tq/" target="_blank">Reel 11</a><br><br>
+<a href="https://www.instagram.com/reel/DWWiUlJkQNK/" target="_blank">Reel 12</a><br><br>
+<a href="https://www.instagram.com/reel/DWbuyUfEwIW/" target="_blank">Reel 13</a><br><br>
+<a href="https://www.instagram.com/reel/DWeNkWYEV5a/" target="_blank">Reel 14</a><br><br>
+<a href="https://www.instagram.com/reel/DWMdSL0k_Pj/" target="_blank">Reel 15</a><br><br>
+<a href="https://www.instagram.com/reel/DWY9J2WkaTy/" target="_blank">Reel 16</a><br><br>
 
-  <h2>Withdraw</h2>
-  <input type="text" id="upi" placeholder="Enter UPI ID"><br><br>
-  <button onclick="withdrawReq()">Withdraw</button>
+<br>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script> 
+<button onclick="earn()">I Completed Task (+₹5)</button>
+
+<h3 id="wallet">Wallet: ₹0</h3>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+
   <script>
     const firebaseConfig = {
-    apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
+    apiKey:"IzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
     authDomain: "reelocash.firebaseapp.com",
     projectId: "reelocash",
     storageBucket: "reelocash.firebasestorage.app",
     messagingSenderId: "134046729864",
-    appId: "1:134046729864:web:7cea62a512f3141155013d
-  firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    appId: "1:134046729864:web:7cea62a512f3141155013d};
 
-    function signup() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      firebase.initializeApp(firebaseConfig);
 
-      auth.createUserWithEmailAndPassword(email, password)
-        .then((userCred) => {
-          db.collection("users").doc(userCred.user.uid).set({
-            balance: 0
-          });
-          alert("Signup success");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+let currentUser = null;
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          alert("Login success");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+// SIGNUP
+function signup() {
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
-    function earn() {
-      const user = auth.currentUser;
-      if (!user) {
-        alert("Please login first");
-        return;
-      }
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      let user = userCredential.user;
 
-      db.collection("users").doc(user.uid).get().then((doc) => {
-        let bal = (doc.data()?.balance || 0) + 5;
-        db.collection("users").doc(user.uid).update({
-          balance: bal
-        });
-        document.getElementById("balance").innerText = bal;
+      db.collection("users").doc(user.uid).set({
+        name: name,
+        email: email,
+        role: "user",
+        wallet: 0
       });
-    }
 
-    function withdrawReq() {
-      const user = auth.currentUser;
-      const upi = document.getElementById("upi").value;
+      alert("Signup Success");
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+}
 
-      if (!user) {
-        alert("Please login first");
-        return;
+// AUTO LOGIN
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    currentUser = user;
+
+    db.collection("users").doc(user.uid).get().then(doc => {
+      if (doc.exists) {
+        document.getElementById("wallet").innerText = "Wallet: ₹" + doc.data().wallet;
       }
+    });
+  }
+});
 
-      if (!upi) {
-        alert("Enter UPI ID");
-        return;
-      }
+// EARN
+function earn() {
+  if (!currentUser) {
+    alert("Login first!");
+    return;
+  }
 
-      db.collection("withdrawals").add({
-        userId: user.uid,
-        upi: upi,
-        status: "pending"
-      }).then(() => {
-        alert("Withdrawal request submitted");
-      });
-    }
-  </script>
+  let userRef = db.collection("users").doc(currentUser.uid);
+
+  userRef.get().then(doc => {
+    let currentWallet = doc.data().wallet;
+
+    userRef.update({
+      wallet: currentWallet + 5
+    });
+
+    document.getElementById("wallet").innerText = "Wallet: ₹" + (currentWallet + 5);
+
+    alert("₹5 Added!");
+  });
+}
+</script>
 
 </body>
 </html>
+      
