@@ -1,126 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reelocash</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="auth-shell">
+    <div class="auth-card">
+      <div class="brand-badge">Reelocash</div>
+      <h1>Welcome Back</h1>
+      <p class="muted">Login or create your account</p>
 
-<h1>💰 Reelocash</h1>
+      <div class="tabs">
+        <button class="tab active" id="loginTab">Login</button>
+        <button class="tab" id="signupTab">Signup</button>
+      </div>
 
-<h2>Signup</h2>
-<input type="text" id="name" placeholder="Name"><br><br>
-<input type="email" id="email" placeholder="Email"><br><br>
-<input type="password" id="password" placeholder="Password"><br><br>
-<button onclick="signup()">Signup</button>
+      <div id="loginForm">
+        <input id="loginEmail" type="email" placeholder="Email" />
+        <input id="loginPassword" type="password" placeholder="Password" />
+        <button class="btn-primary" id="loginBtn">Login</button>
+      </div>
 
-<hr>
+      <div id="signupForm" class="hidden">
+        <input id="signupName" type="text" placeholder="Full Name" />
+        <input id="signupEmail" type="email" placeholder="Email" />
+        <input id="signupPassword" type="password" placeholder="Password" />
+        <button class="btn-primary" id="signupBtn">Create Account</button>
+      </div>
 
-<h2>🎬 Watch Reels & Earn ₹5</h2>
+      <p id="authMsg" class="msg"></p>
+    </div>
+  </div>
 
-<!-- ALL 16 REELS -->
-<a href="https://www.instagram.com/reel/DLQ62B0S4Gu/" target="_blank">Reel 1</a><br><br>
-<a href="https://www.instagram.com/reel/DLSa4qgyFcK/" target="_blank">Reel 2</a><br><br>
-<a href="https://www.instagram.com/reel/DV30l4JTwdR/" target="_blank">Reel 3</a><br><br>
-<a href="https://www.instagram.com/reel/DV7cmFYxn9U/" target="_blank">Reel 4</a><br><br>
-<a href="https://www.instagram.com/reel/DWA2MyGkQtQ/" target="_blank">Reel 5</a><br><br>
-<a href="https://www.instagram.com/reel/DWDYV3mkduC/" target="_blank">Reel 6</a><br><br>
-<a href="https://www.instagram.com/reel/DWD0typEaM7/" target="_blank">Reel 7</a><br><br>
-<a href="https://www.instagram.com/reel/DWIy8vPEZfq/" target="_blank">Reel 8</a><br><br>
-<a href="https://www.instagram.com/reel/DWOp86DEZlS/" target="_blank">Reel 9</a><br><br>
-<a href="https://www.instagram.com/reel/DWRRPu0iBEp/" target="_blank">Reel 10</a><br><br>
-<a href="https://www.instagram.com/reel/DWUOP0gE6tq/" target="_blank">Reel 11</a><br><br>
-<a href="https://www.instagram.com/reel/DWWiUlJkQNK/" target="_blank">Reel 12</a><br><br>
-<a href="https://www.instagram.com/reel/DWbuyUfEwIW/" target="_blank">Reel 13</a><br><br>
-<a href="https://www.instagram.com/reel/DWeNkWYEV5a/" target="_blank">Reel 14</a><br><br>
-<a href="https://www.instagram.com/reel/DWMdSL0k_Pj/" target="_blank">Reel 15</a><br><br>
-<a href="https://www.instagram.com/reel/DWY9J2WkaTy/" target="_blank">Reel 16</a><br><br>
-
-<br>
-
-<button onclick="earn()">I Completed Task (+₹5)</button>
-
-<h3 id="wallet">Wallet: ₹0</h3>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script>
-    const firebaseConfig = {
-    apiKey:"IzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
-    authDomain: "reelocash.firebaseapp.com",
-    projectId: "reelocash",
-    storageBucket: "reelocash.firebasestorage.app",
-    messagingSenderId: "134046729864",
-    appId: "1:134046729864:web:7cea62a512f3141155013d};
+    const loginTab = document.getElementById("loginTab");
+    const signupTab = document.getElementById("signupTab");
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const authMsg = document.getElementById("authMsg");
 
-      firebase.initializeApp(firebaseConfig);
+    loginTab.onclick = () => {
+      loginTab.classList.add("active");
+      signupTab.classList.remove("active");
+      loginForm.classList.remove("hidden");
+      signupForm.classList.add("hidden");
+      authMsg.textContent = "";
+    };
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+    signupTab.onclick = () => {
+      signupTab.classList.add("active");
+      loginTab.classList.remove("active");
+      signupForm.classList.remove("hidden");
+      loginForm.classList.add("hidden");
+      authMsg.textContent = "";
+    };
 
-let currentUser = null;
+    document.getElementById("signupBtn").onclick = async () => {
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
 
-// SIGNUP
-function signup() {
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+      if (!name || !email || !password) {
+        authMsg.textContent = "Please fill all fields.";
+        return;
+      }
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      let user = userCredential.user;
+      try {
+        const cred = await auth.createUserWithEmailAndPassword(email, password);
+        await db.collection("users").doc(cred.user.uid).set({
+          name,
+          email,
+          role: "user",
+          wallet: 0,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        window.location.href = "dashboard.html";
+      } catch (e) {
+        authMsg.textContent = e.message;
+      }
+    };
 
-      db.collection("users").doc(user.uid).set({
-        name: name,
-        email: email,
-        role: "user",
-        wallet: 0
-      });
+    document.getElementById("loginBtn").onclick = async () => {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
 
-      alert("Signup Success");
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-}
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        window.location.href = "dashboard.html";
+      } catch (e) {
+        authMsg.textContent = e.message;
+      }
+    };
 
-// AUTO LOGIN
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    currentUser = user;
-
-    db.collection("users").doc(user.uid).get().then(doc => {
-      if (doc.exists) {
-        document.getElementById("wallet").innerText = "Wallet: ₹" + doc.data().wallet;
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) return;
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      const userData = userDoc.data();
+      if (userData?.role === "admin") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "dashboard.html";
       }
     });
-  }
-});
-
-// EARN
-function earn() {
-  if (!currentUser) {
-    alert("Login first!");
-    return;
-  }
-
-  let userRef = db.collection("users").doc(currentUser.uid);
-
-  userRef.get().then(doc => {
-    let currentWallet = doc.data().wallet;
-
-    userRef.update({
-      wallet: currentWallet + 5
-    });
-
-    document.getElementById("wallet").innerText = "Wallet: ₹" + (currentWallet + 5);
-
-    alert("₹5 Added!");
-  });
-}
-</script>
-
+  </script>
 </body>
 </html>
-      
