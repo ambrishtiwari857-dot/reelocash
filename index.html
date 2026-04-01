@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reelocash</title>
+</head>
+<body>
+
+  <h1>Reelocash</h1>
+
+  <h2>Login</h2>
+  <input type="email" id="email" placeholder="Email"><br><br>
+  <input type="password" id="password" placeholder="Password"><br><br>
+  <button onclick="signup()">Sign Up</button>
+  <button onclick="login()">Login</button>
+
+  <hr>
+
+  <h2>Dashboard</h2>
+  <p>Balance: ₹<span id="balance">0</span></p>
+  <button onclick="earn()">Earn ₹5</button>
+
+  <hr>
+
+  <h2>Withdraw</h2>
+  <input type="text" id="upi" placeholder="Enter UPI ID"><br><br>
+  <button onclick="withdrawReq()">Withdraw</button>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script> 
+  <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
+    authDomain: "reelocash.firebaseapp.com",
+    projectId: "reelocash",
+    storageBucket: "reelocash.firebasestorage.app",
+    messagingSenderId: "134046729864",
+    appId: "1:134046729864:web:7cea62a512f3141155013d
+  firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    function signup() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCred) => {
+          db.collection("users").doc(userCred.user.uid).set({
+            balance: 0
+          });
+          alert("Signup success");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          alert("Login success");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    function earn() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Please login first");
+        return;
+      }
+
+      db.collection("users").doc(user.uid).get().then((doc) => {
+        let bal = (doc.data()?.balance || 0) + 5;
+        db.collection("users").doc(user.uid).update({
+          balance: bal
+        });
+        document.getElementById("balance").innerText = bal;
+      });
+    }
+
+    function withdrawReq() {
+      const user = auth.currentUser;
+      const upi = document.getElementById("upi").value;
+
+      if (!user) {
+        alert("Please login first");
+        return;
+      }
+
+      if (!upi) {
+        alert("Enter UPI ID");
+        return;
+      }
+
+      db.collection("withdrawals").add({
+        userId: user.uid,
+        upi: upi,
+        status: "pending"
+      }).then(() => {
+        alert("Withdrawal request submitted");
+      });
+    }
+  </script>
+
+</body>
+</html>
