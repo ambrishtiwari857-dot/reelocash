@@ -5,9 +5,7 @@ const firebaseConfig = {
     storageBucket: "reelocash.firebasestorage.app",
     messagingSenderId: "134046729864",
     appId: "1:134046729864:web:7cea62a512f3141155013d
-
+};
     firebase.initializeApp(firebaseConfig);
 window.auth = firebase.auth();
 window.db = firebase.firestore();
-
-console.log("firebase-config loaded");
