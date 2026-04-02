@@ -3,189 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reelocash Admin</title>
+  <title>Reelocash Admin Panel</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app-wrap">
-    <div class="topbar">
-      <div>
-        <div class="brand-badge">Reelocash</div>
-        <h2>Admin Panel</h2>
-      </div>
-      <button class="btn-secondary" id="logoutBtn">Logout</button>
+    <div class="hero-card">
+      <h1>Admin Panel</h1>
+      <p>Check proof requests and manual payout status.</p>
     </div>
 
-    <div class="main-grid single-col">
-      <div class="panel">
-        <h3>Pending Tasks</h3>
-        <div id="tasksBox" class="history-list">Loading...</div>
-      </div>
+    <div class="panel">
+      <h3>Proof Requests</h3>
+      <div id="proofList" class="history-list"></div>
+    </div>
 
-      <div class="panel">
-        <h3>Withdrawal Requests</h3>
-        <div id="withdrawBox" class="history-list">Loading...</div>
-      </div>
+    <div class="panel">
+      <h3>Withdrawal Requests</h3>
+      <div id="withdrawList" class="history-list"></div>
     </div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
   <script>
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        window.location.href = "index.html";
+    let walletBalance = Number(localStorage.getItem("walletBalance") || "0");
+    let proofs = JSON.parse(localStorage.getItem("proofs") || "[]");
+    let withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
+
+    function saveData() {
+      localStorage.setItem("walletBalance", String(walletBalance));
+      localStorage.setItem("proofs", JSON.stringify(proofs));
+      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+    }
+
+    function renderProofs() {
+      const box = document.getElementById("proofList");
+
+      if (!proofs.length) {
+        box.innerHTML = "No proof requests yet.";
         return;
       }
 
-      const userDoc = await db.collection("users").doc(user.uid).get();
-      const userData = userDoc.data();
-
-      if (!userData || userData.role !== "admin") {
-        alert("Not authorized");
-        window.location.href = "dashboard.html";
-        return;
-      }
-
-      loadTasks();
-      loadWithdrawals();
-    });
-
-    async function loadTasks() {
-      const box = document.getElementById("tasksBox");
-      const snap = await db.collection("tasks").orderBy("createdAt", "desc").get();
-
-      if (snap.empty) {
-        box.innerHTML = "No tasks found.";
-        return;
-      }
-
-      let html = "";
-      snap.forEach(doc => {
-        const d = doc.data();
-        html += `
+      box.innerHTML = proofs.slice().reverse().map((item) => {
+        const realIndex = proofs.findIndex(p => p.id === item.id);
+        return `
           <div class="admin-item">
-            <strong>${d.title || "Untitled Task"}</strong>
-            <div>${d.userEmail || d.userId}</div>
-            <div>Proof: ${d.proof || "-"}</div>
-            <div>Reward: ₹${d.reward || 0}</div>
-            <div>Status: ${d.status || "pending"}</div>
+            <div><strong>Screenshot:</strong> ${item.fileName}</div>
+            <div><strong>Proof:</strong> ${item.proofText}</div>
+            <div><strong>Reward:</strong> ₹${item.reward}</div>
+            <div><strong>Status:</strong> ${item.status}</div>
             <div class="admin-actions">
-              <button class="btn-primary" onclick="approveTask('${doc.id}','${d.userId}',${d.reward || 0})">Approve</button>
-              <button class="btn-danger" onclick="rejectTask('${doc.id}')">Reject</button>
+              <button class="btn btn-success small-btn" onclick="approveProof(${realIndex})">Approve</button>
+              <button class="btn btn-danger small-btn" onclick="rejectProof(${realIndex})">Reject</button>
             </div>
           </div>
         `;
-      });
-
-      box.innerHTML = html;
+      }).join("");
     }
 
-    async function approveTask(taskId, userId, reward) {
-      const taskRef = db.collection("tasks").doc(taskId);
-      const userRef = db.collection("users").doc(userId);
+    function renderWithdrawals() {
+      const box = document.getElementById("withdrawList");
 
-      await db.runTransaction(async (t) => {
-        const userDoc = await t.get(userRef);
-        const taskDoc = await t.get(taskRef);
-        const userData = userDoc.data();
-        const taskData = taskDoc.data();
-
-        if (taskData.status === "approved") throw new Error("Already approved");
-
-        t.update(userRef, { wallet: (userData.wallet || 0) + reward });
-        t.update(taskRef, {
-          status: "approved",
-          adminMessage: "Verified successfully"
-        });
-      });
-
-      alert("Verified successfully");
-      loadTasks();
-    }
-
-    async function rejectTask(taskId) {
-      await db.collection("tasks").doc(taskId).update({
-        status: "rejected",
-        adminMessage: "Task rejected"
-      });
-      loadTasks();
-    }
-
-    async function loadWithdrawals() {
-      const box = document.getElementById("withdrawBox");
-      const snap = await db.collection("withdrawals").orderBy("createdAt", "desc").get();
-
-      if (snap.empty) {
-        box.innerHTML = "No withdrawal requests found.";
+      if (!withdrawals.length) {
+        box.innerHTML = "No withdrawal requests yet.";
         return;
       }
 
-      let html = "";
-      snap.forEach(doc => {
-        const d = doc.data();
-        html += `
+      box.innerHTML = withdrawals.slice().reverse().map((item) => {
+        const realIndex = withdrawals.findIndex(w => w.id === item.id);
+        return `
           <div class="admin-item">
-            <strong>${d.userEmail || d.userId}</strong>
-            <div>UPI: ${d.upiId || "-"}</div>
-            <div>Amount: ₹${d.amount || 0}</div>
-            <div>Status: ${d.status || "pending"}</div>
+            <div><strong>UPI:</strong> ${item.upiId}</div>
+            <div><strong>Amount:</strong> ₹${item.amount}</div>
+            <div><strong>Status:</strong> ${item.status}</div>
+            <div><strong>Message:</strong> ${item.adminMessage}</div>
             <div class="admin-actions">
-              <button class="btn-secondary" onclick="markProcessing('${doc.id}')">Processing</button>
-              <button class="btn-primary" onclick="markCompleted('${doc.id}','${d.userId}',${d.amount || 0})">Completed</button>
-              <button class="btn-danger" onclick="rejectWithdrawal('${doc.id}')">Reject</button>
+              <button class="btn btn-primary small-btn" onclick="markProcessing(${realIndex})">Processing</button>
+              <button class="btn btn-success small-btn" onclick="markCompleted(${realIndex})">Mark Paid</button>
+              <button class="btn btn-danger small-btn" onclick="rejectWithdrawal(${realIndex})">Reject</button>
             </div>
           </div>
         `;
-      });
-
-      box.innerHTML = html;
+      }).join("");
     }
 
-    async function markProcessing(withdrawId) {
-      await db.collection("withdrawals").doc(withdrawId).update({
-        status: "processing",
-        adminMessage: "Your withdrawal request is processing, please wait 5 or 10 minutes"
-      });
-      loadWithdrawals();
+    function approveProof(index) {
+      if (proofs[index].status === "approved") return;
+      proofs[index].status = "approved";
+      proofs[index].adminMessage = "Verified successfully.";
+      walletBalance += Number(proofs[index].reward || 0);
+      saveData();
+      renderProofs();
+      renderWithdrawals();
     }
 
-    async function markCompleted(withdrawId, userId, amount) {
-      const withdrawRef = db.collection("withdrawals").doc(withdrawId);
-      const userRef = db.collection("users").doc(userId);
-
-      await db.runTransaction(async (t) => {
-        const userDoc = await t.get(userRef);
-        const withdrawDoc = await t.get(withdrawRef);
-        const userData = userDoc.data();
-        const withdrawData = withdrawDoc.data();
-
-        if (withdrawData.status === "completed") throw new Error("Already completed");
-        if ((userData.wallet || 0) < amount) throw new Error("Insufficient wallet");
-
-        t.update(userRef, { wallet: (userData.wallet || 0) - amount });
-        t.update(withdrawRef, {
-          status: "completed",
-          adminMessage: "Withdrawal successfully please check your UPI"
-        });
-      });
-
-      loadWithdrawals();
+    function rejectProof(index) {
+      proofs[index].status = "rejected";
+      proofs[index].adminMessage = "Proof rejected.";
+      saveData();
+      renderProofs();
     }
 
-    async function rejectWithdrawal(withdrawId) {
-      await db.collection("withdrawals").doc(withdrawId).update({
-        status: "rejected",
-        adminMessage: "Withdrawal rejected"
-      });
-      loadWithdrawals();
+    function markProcessing(index) {
+      withdrawals[index].status = "processing";
+      withdrawals[index].adminMessage = "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.";
+      saveData();
+      renderWithdrawals();
     }
 
-    document.getElementById("logoutBtn").onclick = () => {
-      auth.signOut().then(() => window.location.href = "index.html");
-    };
+    function markCompleted(index) {
+      withdrawals[index].status = "completed";
+      withdrawals[index].adminMessage = "Withdrawal successful. Please check your UPI.";
+      saveData();
+      renderWithdrawals();
+    }
+
+    function rejectWithdrawal(index) {
+      withdrawals[index].status = "rejected";
+      withdrawals[index].adminMessage = "Withdrawal rejected.";
+      walletBalance += Number(withdrawals[index].amount || 0);
+      saveData();
+      renderWithdrawals();
+    }
+
+    renderProofs();
+    renderWithdrawals();
   </script>
 </body>
 </html>
