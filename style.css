@@ -12,26 +12,26 @@ body{
     radial-gradient(circle at bottom right, rgba(120,100,255,.16), transparent 30%),
     linear-gradient(135deg,#07111f,#0b1730,#10214a);
   color:#fff;
+  padding:16px
 }
 
-.welcome-shell{
-  min-height:100vh;
+.app-wrap{
+  max-width:1100px;
+  margin:0 auto
+}
+
+.topbar{
   display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.welcome-card{
-  width:100%;
-  max-width:420px;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:18px;
+  padding:18px 20px;
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.08);
-  border-radius:26px;
-  padding:30px 24px;
+  border-radius:22px;
   box-shadow:0 12px 28px rgba(0,0,0,.22);
-  backdrop-filter:blur(10px);
-  text-align:center;
+  backdrop-filter:blur(10px)
 }
 
 .brand-badge{
@@ -42,30 +42,207 @@ body{
   padding:8px 14px;
   border-radius:999px;
   font-size:13px;
-  margin-bottom:18px;
+  margin-bottom:8px
 }
 
-.welcome-card h1{
-  font-size:42px;
-  line-height:1.1;
+.topbar h2{
+  font-size:28px;
+  margin-top:4px
+}
+
+.wallet-box{
+  border:none;
+  background:linear-gradient(135deg,rgba(0,210,122,.18),rgba(92,124,255,.20));
+  color:#fff;
+  border-radius:18px;
+  padding:14px 18px;
+  min-width:150px;
+  text-align:right;
+  box-shadow:0 10px 24px rgba(0,0,0,.20);
+  cursor:pointer
+}
+
+.wallet-box span{
+  display:block;
+  color:#dbe4ff;
+  font-size:13px;
+  margin-bottom:6px
+}
+
+.wallet-box strong{
+  font-size:28px;
+  color:#7fffc0
+}
+
+.hero-card,.panel{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 12px 28px rgba(0,0,0,.22);
+  backdrop-filter:blur(10px)
+}
+
+.hero-card{
   margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(92,124,255,.22),rgba(0,230,118,.12))
 }
 
-.welcome-text{
+.hero-card h1{
+  font-size:42px;
+  margin-bottom:10px
+}
+
+.hero-card p{
   color:#d7e1ff;
-  font-size:18px;
-  line-height:1.6;
-  margin-bottom:24px;
+  line-height:1.7;
+  font-size:18px
+}
+
+.main-grid{
+  display:grid;
+  grid-template-columns:1.35fr .9fr;
+  gap:16px
+}
+
+.panel{
+  margin-bottom:16px
+}
+
+.panel h3{
+  font-size:28px;
+  margin-bottom:10px
+}
+
+.muted{
+  color:#9fb3de;
+  font-size:15px;
+  margin-bottom:14px
+}
+
+.content-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:12px
+}
+
+.content-card{
+  text-decoration:none;
+  display:block;
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.08);
+  color:#fff;
+  font-weight:700;
+  text-align:center;
+  transition:.25s
+}
+
+.content-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(0,255,200,.35)
+}
+
+.input-wrap{
+  margin-bottom:14px
+}
+
+.label{
+  display:block;
+  margin-bottom:8px;
+  color:#dbe4ff;
+  font-size:14px
+}
+
+input,textarea{
+  width:100%;
+  padding:16px;
+  border:none;
+  outline:none;
+  border-radius:16px;
+  background:#edf3ff;
+  color:#111;
+  font-size:16px
+}
+
+textarea{
+  min-height:110px;
+  resize:vertical
+}
+
+.btn{
+  border:none;
+  border-radius:16px;
+  padding:14px 18px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer
+}
+
+.btn-primary{background:#5c7cff;color:#fff}
+.btn-success{background:#00d27a;color:#07131f}
+.btn-danger{background:#ff5a78;color:#fff}
+.btn-secondary{background:#223050;color:#fff}
+
+.status-box{
+  padding:14px;
+  border-radius:14px;
+  background:rgba(92,124,255,.15);
+  color:#e5ecff;
+  line-height:1.6
+}
+
+.hidden-box{display:none}
+
+.history-list{
+  display:grid;
+  gap:10px
+}
+
+.history-item,.admin-item{
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:#d8e3ff;
+  line-height:1.7
+}
+
+.admin-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px
+}
+
+.small-btn{
+  width:auto;
+  min-width:110px
 }
 
 .enter-btn{
   display:inline-block;
   width:100%;
+  text-align:center;
   text-decoration:none;
   background:#00d27a;
   color:#07131f;
   font-weight:700;
   padding:14px 18px;
   border-radius:14px;
-  font-size:17px;
+  font-size:17px
+}
+
+@media (max-width:900px){
+  .main-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+  .content-grid{grid-template-columns:1fr}
+  .topbar{flex-direction:column}
+  .wallet-box{text-align:left;width:100%}
+  .hero-card h1{font-size:34px}
+  .panel h3{font-size:24px}
 }
