@@ -4,466 +4,245 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reelocash</title>
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      min-height:100vh;
-      background:
-        radial-gradient(circle at top left, rgba(0,255,200,.10), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(120,100,255,.16), transparent 30%),
-        linear-gradient(135deg,#07111f,#0b1730,#10214a);
-      color:#fff;
-      padding:16px;
-    }
-
-    .app{
-      max-width:1100px;
-      margin:0 auto;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:14px;
-      margin-bottom:18px;
-    }
-
-    .brand{
-      display:inline-block;
-      background:linear-gradient(135deg,#ffd166,#ff8fab);
-      color:#111;
-      font-weight:700;
-      font-size:13px;
-      padding:8px 14px;
-      border-radius:999px;
-      margin-bottom:10px;
-    }
-
-    .wallet-btn{
-      border:none;
-      background:linear-gradient(135deg,rgba(0,210,122,.18),rgba(92,124,255,.24));
-      color:#fff;
-      padding:14px 16px;
-      border-radius:18px;
-      min-width:150px;
-      text-align:right;
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 10px 24px rgba(0,0,0,.20);
-      cursor:pointer;
-    }
-
-    .wallet-btn span{
-      display:block;
-      font-size:13px;
-      color:#dbe4ff;
-      margin-bottom:4px;
-    }
-
-    .wallet-btn strong{
-      font-size:24px;
-      color:#91ffc8;
-    }
-
-    .card{
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:24px;
-      padding:22px;
-      box-shadow:0 12px 28px rgba(0,0,0,.22);
-      backdrop-filter:blur(10px);
-      margin-bottom:16px;
-    }
-
-    .hero h1{
-      font-size:38px;
-      line-height:1.15;
-      margin-bottom:10px;
-    }
-
-    .hero p{
-      color:#d7e1ff;
-      font-size:18px;
-      line-height:1.6;
-    }
-
-    .section-title{
-      font-size:28px;
-      margin-bottom:10px;
-    }
-
-    .muted{
-      color:#aebee8;
-      margin-bottom:14px;
-      line-height:1.6;
-    }
-
-    .reels-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
-      margin-top:10px;
-    }
-
-    .reel-card{
-      text-decoration:none;
-      color:#fff;
-      background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:18px;
-      transition:.25s;
-      display:block;
-    }
-
-    .reel-card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(0,255,200,.30);
-    }
-
-    .reel-card h3{
-      margin-bottom:8px;
-      font-size:20px;
-    }
-
-    .reel-card p{
-      color:#dbe4ff;
-      margin-bottom:14px;
-      line-height:1.6;
-      font-size:14px;
-    }
-
-    .open-btn{
-      display:inline-block;
-      padding:10px 14px;
-      border-radius:14px;
-      background:#00d27a;
-      color:#07111f;
-      font-weight:700;
-      font-size:14px;
-    }
-
-    .input-wrap{
-      margin-bottom:14px;
-    }
-
-    .label{
-      display:block;
-      margin-bottom:8px;
-      color:#dbe4ff;
-      font-size:14px;
-    }
-
-    input, textarea{
-      width:100%;
-      border:none;
-      outline:none;
-      border-radius:16px;
-      background:#eef3ff;
-      color:#111;
-      padding:15px 16px;
-      font-size:16px;
-    }
-
-    textarea{
-      min-height:120px;
-      resize:vertical;
-    }
-
-    .btn{
-      border:none;
-      cursor:pointer;
-      border-radius:16px;
-      padding:14px 18px;
-      font-size:16px;
-      font-weight:700;
-      width:100%;
-    }
-
-    .btn-primary{
-      background:#5c7cff;
-      color:#fff;
-    }
-
-    .btn-success{
-      background:#00d27a;
-      color:#08131f;
-    }
-
-    .status-box{
-      margin-top:14px;
-      padding:14px;
-      border-radius:14px;
-      background:rgba(92,124,255,.16);
-      color:#e7eeff;
-      line-height:1.6;
-      font-size:15px;
-    }
-
-    #withdrawSection{
-      display:none;
-    }
-
-    .small-note{
-      color:#bfd0ff;
-      font-size:14px;
-      margin-top:10px;
-      line-height:1.6;
-    }
-
-    @media(max-width:768px){
-      .reels-grid{
-        grid-template-columns:1fr;
-      }
-
-      .hero h1{
-        font-size:31px;
-      }
-
-      .section-title{
-        font-size:24px;
-      }
-
-      .wallet-btn{
-        min-width:130px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-
+  <div class="app-wrap">
     <div class="topbar">
       <div>
-        <div class="brand">Reelocash</div>
+        <div class="brand-badge">Reelocash</div>
+        <h2>Welcome to Reelocash</h2>
       </div>
 
-      <button class="wallet-btn" onclick="toggleWithdraw()">
+      <button class="wallet-box" onclick="toggleWithdraw()">
         <span>💰 Wallet</span>
         <strong>₹ <span id="walletAmount">0</span></strong>
       </button>
     </div>
 
-    <div class="card hero">
-      <h1>Welcome to Reelocash</h1>
-      <p>You can earn money by watching reels.</p>
+    <div class="hero-card">
+      <h1>You can earn money by completing the task</h1>
+      <p>Open reels, submit screenshot proof, and request withdrawal from your wallet.</p>
     </div>
 
-    <div class="card">
-      <h2 class="section-title">Open Reels</h2>
-      <p class="muted">Open reels from new to old and complete your task.</p>
+    <div class="main-grid">
+      <div>
+        <div class="panel">
+          <h3>Open Reels</h3>
+          <p class="muted">Tap any card to open content.</p>
 
-      <div class="reels-grid">
-        <a class="reel-card" href="https://www.instagram.com/reel/DWnPe2LESlG/?igsh=MXA1MTBtNmF2YXNtbA==" target="_blank">
-          <h3>Open Reels 1</h3>
-          <p>Newest reel. Watch and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <div class="content-grid">
+            <a class="content-card" href="https://www.instagram.com/reel/DWnPe2LESlG/?igsh=MXA1MTBtNmF2YXNtbA==" target="_blank">Open Reels 1</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWY9J2WkaTy/?igsh=MjM3Y3o2ejFoY29h" target="_blank">Open Reels 2</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWeNkWYEV5a/?igsh=enFzMnM4bncwZHlp" target="_blank">Open Reels 3</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWbuyUfEwIW/?igsh=bHZxdjlxa2E1aWt0" target="_blank">Open Reels 4</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWWiUlJkQNK/?igsh=eXBlemNwNGhldWd0" target="_blank">Open Reels 5</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWUOP0gE6tq/?igsh=YjlsenliZnUxOTV5" target="_blank">Open Reels 6</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWRRPu0iBEp/?igsh=MXU5aTN1MndmcnNpcw==" target="_blank">Open Reels 7</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWOp86DEZlS/?igsh=Y2lxemh2enZ3MG9m" target="_blank">Open Reels 8</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWIy8vPEZfq/?igsh=OTE4bDFqcWx0OHBt" target="_blank">Open Reels 9</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWD0typEaM7/?igsh=bGk1cHVnMGRzZzRw" target="_blank">Open Reels 10</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWDYV3mkduC/?igsh=czBwNHN1YWRlOHVy" target="_blank">Open Reels 11</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWA2MyGkQtQ/?igsh=a3kyYmI1dnZwZzBx" target="_blank">Open Reels 12</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DV7cmFYxn9U/?igsh=aG8xNGcyMGg3am9m" target="_blank">Open Reels 13</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DV30l4JTwdR/?igsh=MXdwbWpodnUzMWZidg==" target="_blank">Open Reels 14</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DLSa4qgyFcK/?igsh=MWRzcGo5aGowNmMwMw==" target="_blank">Open Reels 15</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DLQ62B0S4Gu/?igsh=bmo1eGdya2V0OGdj" target="_blank">Open Reels 16</a>
+          </div>
+        </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWY9J2WkaTy/?igsh=MjM3Y3o2ejFoY29h" target="_blank">
-          <h3>Open Reels 2</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+        <div class="panel">
+          <h3>Send Proof</h3>
+          <p class="muted">Upload screenshot and enter proof details.</p>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWeNkWYEV5a/?igsh=enFzMnM4bncwZHlp" target="_blank">
-          <h3>Open Reels 3</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <div class="input-wrap">
+            <label class="label">Upload Screenshot</label>
+            <input id="screenshot" type="file" accept="image/*" />
+          </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWbuyUfEwIW/?igsh=bHZxdjlxa2E1aWt0" target="_blank">
-          <h3>Open Reels 4</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <div class="input-wrap">
+            <label class="label">Proof Details</label>
+            <textarea id="proofText" placeholder="Write your proof details here..."></textarea>
+          </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWWiUlJkQNK/?igsh=eXBlemNwNGhldWd0" target="_blank">
-          <h3>Open Reels 5</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <div class="input-wrap">
+            <label class="label">Reward Amount</label>
+            <input id="rewardAmount" type="number" placeholder="Enter reward amount" />
+          </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWUOP0gE6tq/?igsh=YjlsenliZnUxOTV5" target="_blank">
-          <h3>Open Reels 6</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <button class="btn btn-primary" onclick="submitProof()">Submit Proof</button>
+          <div id="proofMsg" class="status-box hidden-box"></div>
+        </div>
+      </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWRRPu0iBEp/?igsh=MXU5aTN1MndmcnNpcw==" target="_blank">
-          <h3>Open Reels 7</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+      <div>
+        <div class="panel" id="withdrawSection" style="display:none;">
+          <h3>Withdrawal</h3>
+          <p class="muted">Enter your UPI ID and amount.</p>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWOp86DEZlS/?igsh=Y2lxemh2enZ3MG9m" target="_blank">
-          <h3>Open Reels 8</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <div class="input-wrap">
+            <label class="label">Enter Your UPI ID</label>
+            <input id="upiId" type="text" placeholder="Enter your UPI ID" />
+          </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWIy8vPEZfq/?igsh=OTE4bDFqcWx0OHBt" target="_blank">
-          <h3>Open Reels 9</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <div class="input-wrap">
+            <label class="label">Amount</label>
+            <input id="withdrawAmount" type="number" placeholder="Enter amount" />
+          </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWD0typEaM7/?igsh=bGk1cHVnMGRzZzRw" target="_blank">
-          <h3>Open Reels 10</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+          <button class="btn btn-success" onclick="requestWithdrawal()">Request Withdrawal</button>
+          <div id="withdrawMsg" class="status-box hidden-box"></div>
+        </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWDYV3mkduC/?igsh=czBwNHN1YWRlOHVy" target="_blank">
-          <h3>Open Reels 11</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+        <div class="panel">
+          <h3>Latest Status</h3>
+          <div id="latestStatus" class="status-box">No updates yet.</div>
+        </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DWA2MyGkQtQ/?igsh=a3kyYmI1dnZwZzBx" target="_blank">
-          <h3>Open Reels 12</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+        <div class="panel">
+          <h3>Activity</h3>
+          <div id="historyBox" class="history-list"></div>
+        </div>
 
-        <a class="reel-card" href="https://www.instagram.com/reel/DV7cmFYxn9U/?igsh=aG8xNGcyMGg3am9m" target="_blank">
-          <h3>Open Reels 13</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
-
-        <a class="reel-card" href="https://www.instagram.com/reel/DV30l4JTwdR/?igsh=MXdwbWpodnUzMWZidg==" target="_blank">
-          <h3>Open Reels 14</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
-
-        <a class="reel-card" href="https://www.instagram.com/reel/DLSa4qgyFcK/?igsh=MWRzcGo5aGowNmMwMw==" target="_blank">
-          <h3>Open Reels 15</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
-
-        <a class="reel-card" href="https://www.instagram.com/reel/DLQ62B0S4Gu/?igsh=bmo1eGdya2V0OGdj" target="_blank">
-          <h3>Open Reels 16</h3>
-          <p>Watch the reel and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
-
-        <a class="reel-card" href="https://www.instagram.com/reel/DWMdSL0k_Pj/?igsh=eTJkNHUyODFzbTF6" target="_blank">
-          <h3>Open Reels 17</h3>
-          <p>Oldest saved reel in this list. Watch and complete your task.</p>
-          <span class="open-btn">Open Reels</span>
-        </a>
+        <div class="panel">
+          <a href="admin.html" class="enter-btn">Open Admin Panel</a>
+        </div>
       </div>
     </div>
-
-    <div class="card">
-      <h2 class="section-title">Send Proof</h2>
-      <p class="muted">After watching reels, send your proof details below.</p>
-
-      <div class="input-wrap">
-        <label class="label">Proof Details</label>
-        <textarea id="proofText" placeholder="Write your proof details here..."></textarea>
-      </div>
-
-      <button class="btn btn-primary" onclick="sendProof()">Send Proof</button>
-
-      <div id="proofStatus" class="status-box" style="display:none;"></div>
-    </div>
-
-    <div class="card" id="withdrawSection">
-      <h2 class="section-title">Withdrawal</h2>
-      <p class="muted">Tap wallet to open this section. Enter your UPI ID and amount below.</p>
-
-      <div class="input-wrap">
-        <label class="label">Enter Your UPI ID</label>
-        <input type="text" id="upiId" placeholder="Enter your UPI ID" />
-      </div>
-
-      <div class="input-wrap">
-        <label class="label">Amount</label>
-        <input type="number" id="withdrawAmount" placeholder="Enter amount" />
-      </div>
-
-      <button class="btn btn-success" onclick="requestWithdrawal()">Request Withdrawal</button>
-
-      <div id="withdrawStatus" class="status-box" style="display:none;"></div>
-      <p class="small-note">Tap wallet again to hide withdrawal section.</p>
-    </div>
-
   </div>
 
   <script>
-    let walletBalance = 0;
+    let walletBalance = Number(localStorage.getItem("walletBalance") || "0");
+    let proofs = JSON.parse(localStorage.getItem("proofs") || "[]");
+    let withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
 
-    function updateWalletUI() {
+    function saveData() {
+      localStorage.setItem("walletBalance", String(walletBalance));
+      localStorage.setItem("proofs", JSON.stringify(proofs));
+      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+    }
+
+    function updateWallet() {
       document.getElementById("walletAmount").innerText = walletBalance;
     }
 
     function toggleWithdraw() {
-      const section = document.getElementById("withdrawSection");
-      section.style.display =
-        section.style.display === "none" || section.style.display === ""
-          ? "block"
-          : "none";
+      const box = document.getElementById("withdrawSection");
+      box.style.display = box.style.display === "none" ? "block" : "none";
     }
 
-    function sendProof() {
-      const proof = document.getElementById("proofText").value.trim();
-      const proofStatus = document.getElementById("proofStatus");
+    function showMsg(id, text) {
+      const el = document.getElementById(id);
+      el.classList.remove("hidden-box");
+      el.innerText = text;
+    }
 
-      if (!proof) {
-        proofStatus.style.display = "block";
-        proofStatus.innerText = "Please enter your proof details first.";
+    function renderHistory() {
+      const box = document.getElementById("historyBox");
+      let html = "";
+
+      proofs.slice().reverse().forEach(item => {
+        html += `<div class="history-item">Proof: ${item.status} | ₹${item.reward}</div>`;
+      });
+
+      withdrawals.slice().reverse().forEach(item => {
+        html += `<div class="history-item">Withdrawal: ${item.status} | ₹${item.amount}</div>`;
+      });
+
+      box.innerHTML = html || "No activity yet.";
+    }
+
+    function renderLatestStatus() {
+      const statusBox = document.getElementById("latestStatus");
+      let latest = "No updates yet.";
+
+      if (proofs.length) latest = proofs[proofs.length - 1].adminMessage || latest;
+      if (withdrawals.length) latest = withdrawals[withdrawals.length - 1].adminMessage || latest;
+
+      statusBox.innerText = latest;
+    }
+
+    function submitProof() {
+      const fileInput = document.getElementById("screenshot");
+      const proofText = document.getElementById("proofText").value.trim();
+      const rewardAmount = Number(document.getElementById("rewardAmount").value);
+
+      if (!fileInput.files.length) {
+        showMsg("proofMsg", "Please upload screenshot proof.");
         return;
       }
 
-      proofStatus.style.display = "block";
-      proofStatus.innerText = "Proof submitted successfully. Wait for verification.";
+      if (!proofText) {
+        showMsg("proofMsg", "Please enter proof details.");
+        return;
+      }
+
+      if (!rewardAmount || rewardAmount <= 0) {
+        showMsg("proofMsg", "Please enter reward amount.");
+        return;
+      }
+
+      proofs.push({
+        id: Date.now(),
+        fileName: fileInput.files[0].name,
+        proofText,
+        reward: rewardAmount,
+        status: "pending",
+        adminMessage: "Proof submitted successfully. Waiting for admin verification."
+      });
+
       document.getElementById("proofText").value = "";
+      document.getElementById("rewardAmount").value = "";
+      document.getElementById("screenshot").value = "";
+
+      saveData();
+      renderHistory();
+      renderLatestStatus();
+      showMsg("proofMsg", "Proof submitted successfully. Waiting for admin verification.");
     }
 
     function requestWithdrawal() {
       const upiId = document.getElementById("upiId").value.trim();
       const amount = Number(document.getElementById("withdrawAmount").value);
-      const withdrawStatus = document.getElementById("withdrawStatus");
 
       if (!upiId || !amount) {
-        withdrawStatus.style.display = "block";
-        withdrawStatus.innerText = "Please enter your UPI ID and amount.";
+        showMsg("withdrawMsg", "Please enter your UPI ID and amount.");
         return;
       }
 
-      if (amount <= 0) {
-        withdrawStatus.style.display = "block";
-        withdrawStatus.innerText = "Please enter a valid amount.";
+      if (amount < 5) {
+        showMsg("withdrawMsg", "Minimum withdrawal is ₹5.");
         return;
       }
 
       if (amount > walletBalance) {
-        withdrawStatus.style.display = "block";
-        withdrawStatus.innerText = "Insufficient wallet balance.";
+        showMsg("withdrawMsg", "Insufficient wallet balance.");
         return;
       }
 
-      withdrawStatus.style.display = "block";
-      withdrawStatus.innerText = "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.";
-
       walletBalance -= amount;
-      updateWalletUI();
+
+      withdrawals.push({
+        id: Date.now(),
+        upiId,
+        amount,
+        status: "processing",
+        adminMessage: "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time."
+      });
 
       document.getElementById("upiId").value = "";
       document.getElementById("withdrawAmount").value = "";
+
+      saveData();
+      updateWallet();
+      renderHistory();
+      renderLatestStatus();
+      showMsg("withdrawMsg", "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.");
     }
 
-    updateWalletUI();
+    updateWallet();
+    renderHistory();
+    renderLatestStatus();
   </script>
 </body>
-        </html>
+</html>
