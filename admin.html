@@ -3,130 +3,248 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reelocash Admin Panel</title>
+  <title>Reelocash Admin</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app-wrap">
+    <div class="topbar">
+      <div>
+        <div class="brand-badge">Reelocash</div>
+        <h2>Admin Panel</h2>
+      </div>
+      <button class="btn btn-secondary admin-top-btn" id="refreshBtn">Refresh</button>
+    </div>
+
     <div class="hero-card">
-      <h1>Admin Panel</h1>
-      <p>Check proof requests and manual payout status.</p>
+      <h1>Manual Review & Payout</h1>
+      <p>Check proof requests, approve tasks, and process withdrawal requests.</p>
     </div>
 
     <div class="panel">
       <h3>Proof Requests</h3>
-      <div id="proofList" class="history-list"></div>
+      <div id="tasksBox" class="history-list">Loading...</div>
     </div>
 
     <div class="panel">
       <h3>Withdrawal Requests</h3>
-      <div id="withdrawList" class="history-list"></div>
+      <div id="withdrawBox" class="history-list">Loading...</div>
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
   <script>
-    let walletBalance = Number(localStorage.getItem("walletBalance") || "0");
-    let proofs = JSON.parse(localStorage.getItem("proofs") || "[]");
-    let withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
+    async function loadTasks() {
+      const box = document.getElementById("tasksBox");
+      const snap = await db.collection("tasks").orderBy("createdAt", "desc").get();
 
-    function saveData() {
-      localStorage.setItem("walletBalance", String(walletBalance));
-      localStorage.setItem("proofs", JSON.stringify(proofs));
-      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-    }
-
-    function renderProofs() {
-      const box = document.getElementById("proofList");
-
-      if (!proofs.length) {
-        box.innerHTML = "No proof requests yet.";
+      if (snap.empty) {
+        box.innerHTML = "No proof requests.";
         return;
       }
 
-      box.innerHTML = proofs.slice().reverse().map((item) => {
-        const realIndex = proofs.findIndex(p => p.id === item.id);
-        return `
+      let html = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+
+        html += `
           <div class="admin-item">
-            <div><strong>Screenshot:</strong> ${item.fileName}</div>
-            <div><strong>Proof:</strong> ${item.proofText}</div>
-            <div><strong>Reward:</strong> ₹${item.reward}</div>
-            <div><strong>Status:</strong> ${item.status}</div>
+            <div><strong>Task:</strong> ${d.title || "-"}</div>
+            <div><strong>User ID:</strong> ${d.userId || "-"}</div>
+            <div><strong>Reward:</strong> ₹${d.reward || 0}</div>
+            <div><strong>Status:</strong> ${d.status || "pending"}</div>
+            <div><strong>Proof:</strong> ${d.proof || "-"}</div>
+            <div style="margin-top:8px;">
+              <a class="admin-link" href="${d.screenshotUrl || '#'}" target="_blank">Open Screenshot</a>
+            </div>
             <div class="admin-actions">
-              <button class="btn btn-success small-btn" onclick="approveProof(${realIndex})">Approve</button>
-              <button class="btn btn-danger small-btn" onclick="rejectProof(${realIndex})">Reject</button>
+              <button class="btn btn-success small-btn" onclick="approveTask('${doc.id}','${d.userId}',${Number(d.reward || 0)})">Approve</button>
+              <button class="btn btn-danger small-btn" onclick="rejectTask('${doc.id}')">Reject</button>
             </div>
           </div>
         `;
-      }).join("");
+      });
+
+      box.innerHTML = html;
     }
 
-    function renderWithdrawals() {
-      const box = document.getElementById("withdrawList");
+    async function approveTask(taskId, userId, reward) {
+      try {
+        const userRef = db.collection("users").doc(userId);
+        const taskRef = db.collection("tasks").doc(taskId);
 
-      if (!withdrawals.length) {
-        box.innerHTML = "No withdrawal requests yet.";
+        await db.runTransaction(async (t) => {
+          const userDoc = await t.get(userRef);
+          const taskDoc = await t.get(taskRef);
+
+          if (!userDoc.exists) throw new Error("User not found");
+          if (!taskDoc.exists) throw new Error("Task not found");
+
+          const userData = userDoc.data();
+          const taskData = taskDoc.data();
+
+          if (taskData.status === "approved") {
+            throw new Error("Already approved");
+          }
+
+          t.update(userRef, {
+            wallet: Number(userData.wallet || 0) + Number(reward || 0)
+          });
+
+          t.update(taskRef, {
+            status: "approved",
+            adminMessage: "Verified successfully."
+          });
+        });
+
+        alert("Task approved and wallet updated.");
+        loadTasks();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function rejectTask(taskId) {
+      try {
+        await db.collection("tasks").doc(taskId).update({
+          status: "rejected",
+          adminMessage: "Proof rejected."
+        });
+
+        alert("Task rejected.");
+        loadTasks();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function loadWithdrawals() {
+      const box = document.getElementById("withdrawBox");
+      const snap = await db.collection("withdrawals").orderBy("createdAt", "desc").get();
+
+      if (snap.empty) {
+        box.innerHTML = "No withdrawal requests.";
         return;
       }
 
-      box.innerHTML = withdrawals.slice().reverse().map((item) => {
-        const realIndex = withdrawals.findIndex(w => w.id === item.id);
-        return `
+      let html = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+
+        html += `
           <div class="admin-item">
-            <div><strong>UPI:</strong> ${item.upiId}</div>
-            <div><strong>Amount:</strong> ₹${item.amount}</div>
-            <div><strong>Status:</strong> ${item.status}</div>
-            <div><strong>Message:</strong> ${item.adminMessage}</div>
+            <div><strong>User ID:</strong> ${d.userId || "-"}</div>
+            <div><strong>UPI:</strong> ${d.upiId || "-"}</div>
+            <div><strong>Amount:</strong> ₹${d.amount || 0}</div>
+            <div><strong>Status:</strong> ${d.status || "pending"}</div>
             <div class="admin-actions">
-              <button class="btn btn-primary small-btn" onclick="markProcessing(${realIndex})">Processing</button>
-              <button class="btn btn-success small-btn" onclick="markCompleted(${realIndex})">Mark Paid</button>
-              <button class="btn btn-danger small-btn" onclick="rejectWithdrawal(${realIndex})">Reject</button>
+              <button class="btn btn-primary small-btn" onclick="markProcessing('${doc.id}')">Processing</button>
+              <button class="btn btn-success small-btn" onclick="markCompleted('${doc.id}','${d.userId}',${Number(d.amount || 0)})">Mark Paid</button>
+              <button class="btn btn-danger small-btn" onclick="rejectWithdrawal('${doc.id}','${d.userId}',${Number(d.amount || 0)},'${d.status || "pending"}')">Reject</button>
             </div>
           </div>
         `;
-      }).join("");
+      });
+
+      box.innerHTML = html;
     }
 
-    function approveProof(index) {
-      if (proofs[index].status === "approved") return;
-      proofs[index].status = "approved";
-      proofs[index].adminMessage = "Verified successfully.";
-      walletBalance += Number(proofs[index].reward || 0);
-      saveData();
-      renderProofs();
-      renderWithdrawals();
+    async function markProcessing(withdrawId) {
+      try {
+        await db.collection("withdrawals").doc(withdrawId).update({
+          status: "processing",
+          adminMessage: "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time."
+        });
+
+        alert("Withdrawal marked as processing.");
+        loadWithdrawals();
+      } catch (e) {
+        alert(e.message);
+      }
     }
 
-    function rejectProof(index) {
-      proofs[index].status = "rejected";
-      proofs[index].adminMessage = "Proof rejected.";
-      saveData();
-      renderProofs();
+    async function markCompleted(withdrawId, userId, amount) {
+      try {
+        const userRef = db.collection("users").doc(userId);
+        const withdrawRef = db.collection("withdrawals").doc(withdrawId);
+
+        await db.runTransaction(async (t) => {
+          const userDoc = await t.get(userRef);
+          const withdrawDoc = await t.get(withdrawRef);
+
+          if (!userDoc.exists) throw new Error("User not found");
+          if (!withdrawDoc.exists) throw new Error("Withdrawal not found");
+
+          const userData = userDoc.data();
+          const withdrawData = withdrawDoc.data();
+
+          if (withdrawData.status === "completed") {
+            throw new Error("Already marked paid");
+          }
+
+          if (Number(userData.wallet || 0) < Number(amount || 0)) {
+            throw new Error("Insufficient wallet");
+          }
+
+          t.update(userRef, {
+            wallet: Number(userData.wallet || 0) - Number(amount || 0)
+          });
+
+          t.update(withdrawRef, {
+            status: "completed",
+            adminMessage: "Withdrawal successful. Please check your UPI."
+          });
+        });
+
+        alert("Withdrawal marked paid.");
+        loadWithdrawals();
+      } catch (e) {
+        alert(e.message);
+      }
     }
 
-    function markProcessing(index) {
-      withdrawals[index].status = "processing";
-      withdrawals[index].adminMessage = "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.";
-      saveData();
-      renderWithdrawals();
+    async function rejectWithdrawal(withdrawId, userId, amount, currentStatus) {
+      try {
+        const withdrawRef = db.collection("withdrawals").doc(withdrawId);
+        const userRef = db.collection("users").doc(userId);
+
+        await db.runTransaction(async (t) => {
+          const withdrawDoc = await t.get(withdrawRef);
+          if (!withdrawDoc.exists) throw new Error("Withdrawal not found");
+
+          const withdrawData = withdrawDoc.data();
+
+          if (withdrawData.status === "rejected") {
+            throw new Error("Already rejected");
+          }
+
+          if (withdrawData.status === "completed") {
+            throw new Error("Already completed, cannot reject now");
+          }
+
+          t.update(withdrawRef, {
+            status: "rejected",
+            adminMessage: "Withdrawal rejected."
+          });
+        });
+
+        alert("Withdrawal rejected.");
+        loadWithdrawals();
+      } catch (e) {
+        alert(e.message);
+      }
     }
 
-    function markCompleted(index) {
-      withdrawals[index].status = "completed";
-      withdrawals[index].adminMessage = "Withdrawal successful. Please check your UPI.";
-      saveData();
-      renderWithdrawals();
-    }
+    document.getElementById("refreshBtn").addEventListener("click", () => {
+      loadTasks();
+      loadWithdrawals();
+    });
 
-    function rejectWithdrawal(index) {
-      withdrawals[index].status = "rejected";
-      withdrawals[index].adminMessage = "Withdrawal rejected.";
-      walletBalance += Number(withdrawals[index].amount || 0);
-      saveData();
-      renderWithdrawals();
-    }
-
-    renderProofs();
-    renderWithdrawals();
+    loadTasks();
+    loadWithdrawals();
   </script>
 </body>
-</html>
+  </html>
