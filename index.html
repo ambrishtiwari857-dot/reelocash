@@ -1,73 +1,378 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reelocash</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reelocash</title>
 
-<!-- AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188"
-crossorigin="anonymous"></script>
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188"
+    crossorigin="anonymous"></script>
 
-<style>
-body {
-  background:#0f172a;
-  color:white;
-  text-align:center;
-  font-family:Arial;
-}
-.btn {
-  display:block;
-  margin:10px auto;
-  padding:12px;
-  background:#2563eb;
-  color:white;
-  text-decoration:none;
-  border-radius:8px;
-  width:80%;
-}
-</style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #07163d;
+      color: #fff;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 14px;
+      background: #081735;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .wallet-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .wallet-balance {
+      background: #0d224d;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .wallet-btn {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 14px;
+    }
+
+    .welcome-box {
+      background: #0b1d47;
+      padding: 16px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.16);
+    }
+
+    .welcome-box h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .welcome-box p {
+      margin: 0;
+      color: #d5ddff;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .warning-text {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #ffd7a8;
+    }
+
+    .ad-box {
+      background: #0b1d47;
+      border-radius: 14px;
+      padding: 8px;
+      margin: 14px 0 18px;
+    }
+
+    .section-title {
+      margin: 18px 0 10px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .reel-btn {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      text-align: center;
+      background: #2f66e5;
+      color: white;
+      padding: 18px 14px;
+      margin: 14px 0;
+      border-radius: 18px;
+      font-size: 17px;
+      font-weight: 500;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    }
+
+    .card {
+      background: #0b1d47;
+      padding: 16px;
+      border-radius: 18px;
+      margin-top: 22px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 13px 12px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    .main-btn {
+      width: 100%;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-top: 14px;
+      cursor: pointer;
+    }
+
+    .secondary-btn {
+      width: 100%;
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-top: 14px;
+      cursor: pointer;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #cdd8ff;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .proof-preview {
+      margin-top: 12px;
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: none;
+    }
+
+    .popup-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .popup {
+      width: 100%;
+      max-width: 380px;
+      background: #0b1d47;
+      border-radius: 18px;
+      padding: 18px;
+      color: white;
+    }
+
+    .popup h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    .close-btn {
+      width: 100%;
+      background: #334155;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .msg {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #b7ffca;
+      line-height: 1.5;
+    }
+
+    .proof-msg {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #b7ffca;
+    }
+  </style>
 </head>
-
 <body>
 
-<h2>🔥 Watch Reels & Earn 💰</h2>
+  <div class="topbar">
+    <div class="brand">🔥 Reelocash</div>
+    <div class="wallet-wrap">
+      <div class="wallet-balance" id="walletBalance">₹ 0</div>
+      <button class="wallet-btn" onclick="openWallet()">Wallet</button>
+    </div>
+  </div>
 
-<!-- 🔥 TOP AD -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-2895875871668188"
-     data-ad-slot="6015688161"
-     data-ad-format="auto"></ins>
+  <div class="container">
 
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+    <div class="welcome-box">
+      <h2>👋 Welcome to Reelocash</h2>
+      <p>
+        You can earn money by watching reels. <br>
+        Watch full reels, complete tasks, then submit screenshot proof to claim payment.
+      </p>
+      <div class="warning-text">
+        ⚠️ Do not skip any reel, otherwise your payment will be cancelled.
+      </div>
+    </div>
 
-<!-- 🎬 REELS LIST -->
-<a class="btn" href="https://www.instagram.com/reel/DWMdSL0k_Pj/" target="_blank">▶ Reel 1</a>
-<a class="btn" href="https://www.instagram.com/reel/DLQ62B0S4Gu/" target="_blank">▶ Reel 2</a>
-<a class="btn" href="https://www.instagram.com/reel/DWY9J2WkaTy/" target="_blank">▶ Reel 3</a>
-<a class="btn" href="https://www.instagram.com/reel/DWeNkWYEV5a/" target="_blank">▶ Reel 4</a>
-<a class="btn" href="https://www.instagram.com/reel/DWbuyUfEwIW/" target="_blank">▶ Reel 5</a>
-<a class="btn" href="https://www.instagram.com/reel/DWWiUlJkQNK/" target="_blank">▶ Reel 6</a>
-<a class="btn" href="https://www.instagram.com/reel/DWUOP0gE6tq/" target="_blank">▶ Reel 7</a>
-<a class="btn" href="https://www.instagram.com/reel/DWRRPu0iBEp/" target="_blank">▶ Reel 8</a>
-<a class="btn" href="https://www.instagram.com/reel/DWOp86DEZlS/" target="_blank">▶ Reel 9</a>
-<a class="btn" href="https://www.instagram.com/reel/DWIy8vPEZfq/" target="_blank">▶ Reel 10</a>
-<a class="btn" href="https://www.instagram.com/reel/DWDYV3mkduC/" target="_blank">▶ Reel 11</a>
-<a class="btn" href="https://www.instagram.com/reel/DWA2MyGkQtQ/" target="_blank">▶ Reel 12</a>
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2895875871668188"
+           data-ad-slot="6015688161"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
 
-<!-- 🔥 BOTTOM AD -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-2895875871668188"
-     data-ad-slot="6015688161"
-     data-ad-format="auto"></ins>
+    <div class="section-title">🎬 Reels Section</div>
 
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWMdSL0k_Pj/?igsh=eTJkNHUyODFzbTF6" target="_blank">▶ Reel 1</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DLQ62B0S4Gu/?igsh=bmo1eGdya2V0OGdj" target="_blank">▶ Reel 2</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWY9J2WkaTy/?igsh=MjM3Y3o2ejFoY29h" target="_blank">▶ Reel 3</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWeNkWYEV5a/?igsh=enFzMnM4bncwZHlp" target="_blank">▶ Reel 4</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWbuyUfEwIW/?igsh=bHZxdjlxa2E1aWt0" target="_blank">▶ Reel 5</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWWiUlJkQNK/?igsh=eXBlemNwNGhldWd0" target="_blank">▶ Reel 6</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWUOP0gE6tq/?igsh=YjlsenliZnUxOTV5" target="_blank">▶ Reel 7</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWRRPu0iBEp/?igsh=MXU5aTN1MndmcnNpcw==" target="_blank">▶ Reel 8</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWOp86DEZlS/?igsh=Y2lxemh2enZ3MG9m" target="_blank">▶ Reel 9</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWIy8vPEZfq/?igsh=OTE4bDFqcWx0OHBt" target="_blank">▶ Reel 10</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWDYV3mkduC/?igsh=czBwNHN1YWRlOHVy" target="_blank">▶ Reel 11</a>
+    <a class="reel-btn" href="https://www.instagram.com/reel/DWA2MyGkQtQ/?igsh=a3kyYmI1dnZwZzBx" target="_blank">▶ Reel 12</a>
+
+    <div class="card">
+      <h3>📸 Send Proof</h3>
+      <input class="input" type="file" id="proofFile" accept="image/*" onchange="previewProof(event)" />
+      <img id="proofPreview" class="proof-preview" alt="Proof Preview">
+      <button class="secondary-btn" onclick="submitProof()">Submit Proof</button>
+      <div class="proof-msg" id="proofMsg"></div>
+      <div class="note">
+        Screenshot upload karne ke baad proof review hoga.  
+        Complete each task properly then send screenshot and UPI ID.
+      </div>
+    </div>
+
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2895875871668188"
+           data-ad-slot="6015688161"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <div class="popup-bg" id="walletPopup">
+    <div class="popup">
+      <h3>💼 Withdrawal</h3>
+      <input class="input" type="text" id="upiId" placeholder="Enter your UPI ID" />
+      <button class="main-btn" onclick="requestWithdrawal()">Request Withdrawal</button>
+      <div class="msg" id="withdrawMsg"></div>
+      <button class="close-btn" onclick="closeWallet()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    let walletAmount = 0;
+    document.getElementById("walletBalance").innerText = "₹ " + walletAmount;
+
+    function openWallet() {
+      document.getElementById("walletPopup").style.display = "flex";
+    }
+
+    function closeWallet() {
+      document.getElementById("walletPopup").style.display = "none";
+    }
+
+    function requestWithdrawal() {
+      const upi = document.getElementById("upiId").value.trim();
+      const msg = document.getElementById("withdrawMsg");
+
+      if (upi === "") {
+        msg.style.color = "#ffb4b4";
+        msg.innerText = "Please enter your UPI ID.";
+        return;
+      }
+
+      msg.style.color = "#b7ffca";
+      msg.innerText = "Please wait 5 to 6 minutes, your withdrawal is under processing. This may take time.";
+    }
+
+    function previewProof(event) {
+      const file = event.target.files[0];
+      const preview = document.getElementById("proofPreview");
+
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      }
+    }
+
+    function submitProof() {
+      const file = document.getElementById("proofFile").files[0];
+      const proofMsg = document.getElementById("proofMsg");
+
+      if (!file) {
+        proofMsg.style.color = "#ffb4b4";
+        proofMsg.innerText = "Please select a screenshot first.";
+        return;
+      }
+
+      proofMsg.style.color = "#b7ffca";
+      proofMsg.innerText = "Proof submitted successfully. Please wait for admin review.";
+    }
+  </script>
 
 </body>
 </html>
