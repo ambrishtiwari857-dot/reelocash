@@ -5,374 +5,302 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reelocash</title>
 
-  <!-- AdSense -->
+  <link rel="stylesheet" href="style.css" />
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188"
     crossorigin="anonymous"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #07163d;
-      color: #fff;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 14px;
-      background: #081735;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .brand {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .wallet-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .wallet-balance {
-      background: #0d224d;
-      border: 1px solid rgba(255,255,255,0.12);
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .wallet-btn {
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: auto;
-      padding: 14px;
-    }
-
-    .welcome-box {
-      background: #0b1d47;
-      padding: 16px;
-      border-radius: 16px;
-      margin-bottom: 16px;
-      text-align: center;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.16);
-    }
-
-    .welcome-box h2 {
-      margin: 0 0 8px;
-      font-size: 24px;
-    }
-
-    .welcome-box p {
-      margin: 0;
-      color: #d5ddff;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .warning-text {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #ffd7a8;
-    }
-
-    .ad-box {
-      background: #0b1d47;
-      border-radius: 14px;
-      padding: 8px;
-      margin: 14px 0 18px;
-    }
-
-    .section-title {
-      margin: 18px 0 10px;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .reel-btn {
-      display: block;
-      width: 100%;
-      text-decoration: none;
-      text-align: center;
-      background: #2f66e5;
-      color: white;
-      padding: 18px 14px;
-      margin: 14px 0;
-      border-radius: 18px;
-      font-size: 17px;
-      font-weight: 500;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
-    }
-
-    .card {
-      background: #0b1d47;
-      padding: 16px;
-      border-radius: 18px;
-      margin-top: 22px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-    }
-
-    .card h3 {
-      margin: 0 0 12px;
-      font-size: 18px;
-    }
-
-    .input {
-      width: 100%;
-      padding: 13px 12px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      margin-top: 10px;
-      font-size: 15px;
-    }
-
-    .main-btn {
-      width: 100%;
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 16px;
-      margin-top: 14px;
-      cursor: pointer;
-    }
-
-    .secondary-btn {
-      width: 100%;
-      background: #16a34a;
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 16px;
-      margin-top: 14px;
-      cursor: pointer;
-    }
-
-    .note {
-      font-size: 13px;
-      color: #cdd8ff;
-      margin-top: 10px;
-      line-height: 1.5;
-    }
-
-    .proof-preview {
-      margin-top: 12px;
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 12px;
-      display: none;
-    }
-
-    .popup-bg {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-
-    .popup {
-      width: 100%;
-      max-width: 380px;
-      background: #0b1d47;
-      border-radius: 18px;
-      padding: 18px;
-      color: white;
-    }
-
-    .popup h3 {
-      margin-top: 0;
-      margin-bottom: 12px;
-    }
-
-    .close-btn {
-      width: 100%;
-      background: #334155;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 15px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-
-    .msg {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #b7ffca;
-      line-height: 1.5;
-    }
-
-    .proof-msg {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #b7ffca;
-    }
-  </style>
 </head>
 <body>
-
-  <div class="topbar">
-    <div class="brand">🔥 Reelocash</div>
-    <div class="wallet-wrap">
-      <div class="wallet-balance" id="walletBalance">₹ 0</div>
-      <button class="wallet-btn" onclick="openWallet()">Wallet</button>
-    </div>
-  </div>
-
-  <div class="container">
-
-    <div class="welcome-box">
-      <h2>👋 Welcome to Reelocash</h2>
-      <p>
-        You can earn money by watching reels. <br>
-        Watch full reels, complete tasks, then submit screenshot proof to claim payment.
-      </p>
-      <div class="warning-text">
-        ⚠️ Do not skip any reel, otherwise your payment will be cancelled.
+  <div class="app-wrap">
+    <div class="topbar">
+      <div>
+        <div class="brand-badge">Reelocash</div>
+        <h2>Welcome to Reelocash</h2>
       </div>
+
+      <button class="wallet-box" onclick="toggleWithdraw()">
+        <span>💰 Wallet</span>
+        <strong>₹ <span id="walletAmount">0</span></strong>
+      </button>
     </div>
 
-    <div class="ad-box">
+    <div class="hero-card">
+      <h1>You can earn money by completing the task</h1>
+      <p>Open reels, submit screenshot proof, wait for admin review, then request withdrawal.</p>
+    </div>
+
+    <div class="panel ad-panel">
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-2895875871668188"
            data-ad-slot="6015688161"
            data-ad-format="auto"
            data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
     </div>
 
-    <div class="section-title">🎬 Reels Section</div>
+    <div class="main-grid">
+      <div>
+        <div class="panel">
+          <h3>Open Reels</h3>
+          <p class="muted">Tap any reel card to open content.</p>
 
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWMdSL0k_Pj/?igsh=eTJkNHUyODFzbTF6" target="_blank">▶ Reel 1</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DLQ62B0S4Gu/?igsh=bmo1eGdya2V0OGdj" target="_blank">▶ Reel 2</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWY9J2WkaTy/?igsh=MjM3Y3o2ejFoY29h" target="_blank">▶ Reel 3</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWeNkWYEV5a/?igsh=enFzMnM4bncwZHlp" target="_blank">▶ Reel 4</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWbuyUfEwIW/?igsh=bHZxdjlxa2E1aWt0" target="_blank">▶ Reel 5</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWWiUlJkQNK/?igsh=eXBlemNwNGhldWd0" target="_blank">▶ Reel 6</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWUOP0gE6tq/?igsh=YjlsenliZnUxOTV5" target="_blank">▶ Reel 7</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWRRPu0iBEp/?igsh=MXU5aTN1MndmcnNpcw==" target="_blank">▶ Reel 8</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWOp86DEZlS/?igsh=Y2lxemh2enZ3MG9m" target="_blank">▶ Reel 9</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWIy8vPEZfq/?igsh=OTE4bDFqcWx0OHBt" target="_blank">▶ Reel 10</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWDYV3mkduC/?igsh=czBwNHN1YWRlOHVy" target="_blank">▶ Reel 11</a>
-    <a class="reel-btn" href="https://www.instagram.com/reel/DWA2MyGkQtQ/?igsh=a3kyYmI1dnZwZzBx" target="_blank">▶ Reel 12</a>
+          <div class="content-grid">
+            <a class="content-card" href="https://www.instagram.com/reel/DWMdSL0k_Pj/?igsh=eTJkNHUyODFzbTF6" target="_blank">▶ Reel 1</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DLQ62B0S4Gu/?igsh=bmo1eGdya2V0OGdj" target="_blank">▶ Reel 2</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWY9J2WkaTy/?igsh=MjM3Y3o2ejFoY29h" target="_blank">▶ Reel 3</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWeNkWYEV5a/?igsh=enFzMnM4bncwZHlp" target="_blank">▶ Reel 4</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWbuyUfEwIW/?igsh=bHZxdjlxa2E1aWt0" target="_blank">▶ Reel 5</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWWiUlJkQNK/?igsh=eXBlemNwNGhldWd0" target="_blank">▶ Reel 6</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWUOP0gE6tq/?igsh=YjlsenliZnUxOTV5" target="_blank">▶ Reel 7</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWRRPu0iBEp/?igsh=MXU5aTN1MndmcnNpcw==" target="_blank">▶ Reel 8</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWOp86DEZlS/?igsh=Y2lxemh2enZ3MG9m" target="_blank">▶ Reel 9</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWIy8vPEZfq/?igsh=OTE4bDFqcWx0OHBt" target="_blank">▶ Reel 10</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWDYV3mkduC/?igsh=czBwNHN1YWRlOHVy" target="_blank">▶ Reel 11</a>
+            <a class="content-card" href="https://www.instagram.com/reel/DWA2MyGkQtQ/?igsh=a3kyYmI1dnZwZzBx" target="_blank">▶ Reel 12</a>
+          </div>
+        </div>
 
-    <div class="card">
-      <h3>📸 Send Proof</h3>
-      <input class="input" type="file" id="proofFile" accept="image/*" onchange="previewProof(event)" />
-      <img id="proofPreview" class="proof-preview" alt="Proof Preview">
-      <button class="secondary-btn" onclick="submitProof()">Submit Proof</button>
-      <div class="proof-msg" id="proofMsg"></div>
-      <div class="note">
-        Screenshot upload karne ke baad proof review hoga.  
-        Complete each task properly then send screenshot and UPI ID.
+        <div class="panel">
+          <h3>Send Proof</h3>
+          <p class="muted">Upload screenshot and enter proof details for admin review.</p>
+
+          <div class="input-wrap">
+            <label class="label">Task Title</label>
+            <input id="taskTitle" placeholder="Enter task title" />
+          </div>
+
+          <div class="input-wrap">
+            <label class="label">Reward Amount</label>
+            <input id="taskReward" type="number" placeholder="Enter reward amount" />
+          </div>
+
+          <div class="input-wrap">
+            <label class="label">Upload Screenshot</label>
+            <input id="screenshot" type="file" accept="image/*" />
+          </div>
+
+          <div class="input-wrap">
+            <label class="label">Proof Details</label>
+            <textarea id="proofText" placeholder="Write proof details here..."></textarea>
+          </div>
+
+          <button class="btn btn-primary" id="submitProofBtn">Submit Proof</button>
+          <div id="proofStatus" class="status-box hidden-box"></div>
+        </div>
       </div>
-    </div>
 
-    <div class="ad-box">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-2895875871668188"
-           data-ad-slot="6015688161"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
-  </div>
+      <div>
+        <div class="panel" id="withdrawSection" style="display:none;">
+          <h3>Withdrawal</h3>
+          <p class="muted">Enter your UPI ID and amount to request withdrawal.</p>
 
-  <div class="popup-bg" id="walletPopup">
-    <div class="popup">
-      <h3>💼 Withdrawal</h3>
-      <input class="input" type="text" id="upiId" placeholder="Enter your UPI ID" />
-      <button class="main-btn" onclick="requestWithdrawal()">Request Withdrawal</button>
-      <div class="msg" id="withdrawMsg"></div>
-      <button class="close-btn" onclick="closeWallet()">Close</button>
+          <div class="input-wrap">
+            <label class="label">Enter Your UPI ID</label>
+            <input id="upiId" placeholder="Enter your UPI ID" />
+          </div>
+
+          <div class="input-wrap">
+            <label class="label">Amount</label>
+            <input id="withdrawAmount" type="number" placeholder="Enter amount" />
+          </div>
+
+          <button class="btn btn-success" id="withdrawBtn">Request Withdrawal</button>
+          <div id="withdrawStatus" class="status-box hidden-box"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Latest Status</h3>
+          <div id="latestStatus" class="status-box">No updates yet.</div>
+        </div>
+
+        <div class="panel">
+          <h3>Activity</h3>
+          <div id="historyBox" class="history-list">Loading...</div>
+        </div>
+
+        <div class="panel">
+          <a href="admin.html" class="enter-btn">Open Admin Panel</a>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    let walletAmount = 0;
-    document.getElementById("walletBalance").innerText = "₹ " + walletAmount;
-
-    function openWallet() {
-      document.getElementById("walletPopup").style.display = "flex";
-    }
-
-    function closeWallet() {
-      document.getElementById("walletPopup").style.display = "none";
-    }
-
-    function requestWithdrawal() {
-      const upi = document.getElementById("upiId").value.trim();
-      const msg = document.getElementById("withdrawMsg");
-
-      if (upi === "") {
-        msg.style.color = "#ffb4b4";
-        msg.innerText = "Please enter your UPI ID.";
-        return;
-      }
-
-      msg.style.color = "#b7ffca";
-      msg.innerText = "Please wait 5 to 6 minutes, your withdrawal is under processing. This may take time.";
-    }
-
-    function previewProof(event) {
-      const file = event.target.files[0];
-      const preview = document.getElementById("proofPreview");
-
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-      }
-    }
-
-    function submitProof() {
-      const file = document.getElementById("proofFile").files[0];
-      const proofMsg = document.getElementById("proofMsg");
-
-      if (!file) {
-        proofMsg.style.color = "#ffb4b4";
-        proofMsg.innerText = "Please select a screenshot first.";
-        return;
-      }
-
-      proofMsg.style.color = "#b7ffca";
-      proofMsg.innerText = "Proof submitted successfully. Please wait for admin review.";
-    }
+    (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script>
+    let deviceId = localStorage.getItem("deviceId");
+    if (!deviceId) {
+      deviceId = "user_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem("deviceId", deviceId);
+    }
+
+    let currentUserData = { wallet: 0 };
+
+    function showBox(id, text, color = "") {
+      const el = document.getElementById(id);
+      el.classList.remove("hidden-box");
+      el.textContent = text;
+      if (color) el.style.color = color;
+    }
+
+    function toggleWithdraw() {
+      const section = document.getElementById("withdrawSection");
+      section.style.display = section.style.display === "none" ? "block" : "none";
+    }
+
+    async function ensureUser() {
+      const userRef = db.collection("users").doc(deviceId);
+      const userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        await userRef.set({
+          deviceId,
+          role: "user",
+          wallet: 0,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      }
+
+      const refreshed = await userRef.get();
+      currentUserData = refreshed.data() || { wallet: 0 };
+      document.getElementById("walletAmount").textContent = currentUserData.wallet || 0;
+    }
+
+    async function loadHistory() {
+      const box = document.getElementById("historyBox");
+      let html = "";
+
+      const tasksSnap = await db.collection("tasks").where("userId", "==", deviceId).get();
+      tasksSnap.forEach(doc => {
+        const d = doc.data();
+        html += `<div class="history-item">Task: ${d.title} | ₹${d.reward} | ${d.status}</div>`;
+      });
+
+      const withdrawalsSnap = await db.collection("withdrawals").where("userId", "==", deviceId).get();
+      withdrawalsSnap.forEach(doc => {
+        const d = doc.data();
+        html += `<div class="history-item">Withdrawal: ₹${d.amount} | ${d.status}</div>`;
+      });
+
+      box.innerHTML = html || "No activity yet.";
+    }
+
+    async function loadLatestStatus() {
+      const statusBox = document.getElementById("latestStatus");
+      let latest = "No updates yet.";
+
+      const tasksSnap = await db.collection("tasks").where("userId", "==", deviceId).get();
+      tasksSnap.forEach(doc => {
+        const d = doc.data();
+        if (d.adminMessage) latest = d.adminMessage;
+      });
+
+      const withdrawalsSnap = await db.collection("withdrawals").where("userId", "==", deviceId).get();
+      withdrawalsSnap.forEach(doc => {
+        const d = doc.data();
+        if (d.adminMessage) latest = d.adminMessage;
+      });
+
+      statusBox.textContent = latest;
+
+      const userDoc = await db.collection("users").doc(deviceId).get();
+      currentUserData = userDoc.data() || { wallet: 0 };
+      document.getElementById("walletAmount").textContent = currentUserData.wallet || 0;
+    }
+
+    document.getElementById("submitProofBtn").addEventListener("click", async () => {
+      const title = document.getElementById("taskTitle").value.trim();
+      const reward = Number(document.getElementById("taskReward").value);
+      const proof = document.getElementById("proofText").value.trim();
+      const file = document.getElementById("screenshot").files[0];
+
+      if (!title || !reward || !proof || !file) {
+        showBox("proofStatus", "Please fill all fields and upload screenshot.", "#ffb4b4");
+        return;
+      }
+
+      try {
+        showBox("proofStatus", "Uploading screenshot...");
+
+        const ext = file.name.split(".").pop();
+        const path = `proofs/${deviceId}/${Date.now()}.${ext}`;
+        const snap = await storage.ref(path).put(file);
+        const screenshotUrl = await snap.ref.getDownloadURL();
+
+        await db.collection("tasks").add({
+          userId: deviceId,
+          title,
+          reward,
+          proof,
+          screenshotUrl,
+          status: "pending",
+          adminMessage: "Proof submitted successfully. Waiting for verification.",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        document.getElementById("taskTitle").value = "";
+        document.getElementById("taskReward").value = "";
+        document.getElementById("proofText").value = "";
+        document.getElementById("screenshot").value = "";
+
+        showBox("proofStatus", "Proof submitted successfully. Waiting for verification.", "#b7ffca");
+        loadHistory();
+        loadLatestStatus();
+      } catch (e) {
+        showBox("proofStatus", e.message, "#ffb4b4");
+      }
+    });
+
+    document.getElementById("withdrawBtn").addEventListener("click", async () => {
+      const upiId = document.getElementById("upiId").value.trim();
+      const amount = Number(document.getElementById("withdrawAmount").value);
+
+      if (!upiId || !amount) {
+        showBox("withdrawStatus", "Please enter your UPI ID and amount.", "#ffb4b4");
+        return;
+      }
+
+      if (amount < 5) {
+        showBox("withdrawStatus", "Minimum withdrawal is ₹5.", "#ffb4b4");
+        return;
+      }
+
+      if (amount > (currentUserData.wallet || 0)) {
+        showBox("withdrawStatus", "Insufficient wallet balance.", "#ffb4b4");
+        return;
+      }
+
+      await db.collection("withdrawals").add({
+        userId: deviceId,
+        upiId,
+        amount,
+        status: "pending",
+        adminMessage: "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      document.getElementById("upiId").value = "";
+      document.getElementById("withdrawAmount").value = "";
+
+      showBox("withdrawStatus", "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.", "#b7ffca");
+      loadHistory();
+      loadLatestStatus();
+    });
+
+    async function init() {
+      await ensureUser();
+      await loadHistory();
+      await loadLatestStatus();
+    }
+
+    init();
+  </script>
 </body>
 </html>
