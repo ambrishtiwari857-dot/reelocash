@@ -1,723 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reelocash</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reelocash</title>
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188"
-    crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188" crossorigin="anonymous"></script>
 
-  <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-
-    body {
-      margin: 0;
-      background: linear-gradient(180deg, #07163d 0%, #081a4a 100%);
-      color: #fff;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(10,31,92,0.96);
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .uid-box {
-      font-size: 12px;
-      max-width: 65%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: #dbe7ff;
-    }
-
-    .wallet-box {
-      background: linear-gradient(135deg, #1947b8, #2f66ff);
-      padding: 8px 12px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    .wrap {
-      width: 92%;
-      max-width: 760px;
-      margin: auto;
-      padding: 12px 0 28px;
-    }
-
-    .brand-wrap {
-      position: relative;
-      text-align: center;
-      margin: 16px 0 14px;
-      padding: 20px 12px 8px;
-    }
-
-    .brand-glow {
-      position: absolute;
-      left: 50%;
-      top: 8px;
-      transform: translateX(-50%);
-      width: 200px;
-      height: 80px;
-      background: radial-gradient(circle, rgba(59,130,246,0.35) 0%, rgba(59,130,246,0.12) 45%, rgba(59,130,246,0) 75%);
-      filter: blur(12px);
-      pointer-events: none;
-    }
-
-    .brand-title {
-      margin: 0;
-      font-size: 36px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 35%, #60a5fa 65%, #2563eb 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 12px rgba(59,130,246,0.18), 0 4px 20px rgba(0,0,0,0.25);
-      position: relative;
-      z-index: 1;
-    }
-
-    .brand-tagline {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #dbe7ff;
-      letter-spacing: 0.5px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .box {
-      background: rgba(11,29,71,0.96);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 22px;
-      padding: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-    }
-
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .hero-title {
-      font-size: 18px;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .hero-sub {
-      text-align: center;
-      color: #d7e4ff;
-      line-height: 1.6;
-      font-size: 15px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      margin-top: 10px;
-      font-size: 15px;
-      outline: none;
-      background: #eef4ff;
-      color: #111827;
-    }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .btn {
-      width: 100%;
-      background: linear-gradient(135deg, #2f66ff, #3b82f6);
-      color: white;
-      border: none;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 16px;
-      margin-top: 12px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .btn-green {
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-    }
-
-    .btn-red {
-      background: linear-gradient(135deg, #dc2626, #ef4444);
-    }
-
-    .btn-gray {
-      background: linear-gradient(135deg, #334155, #475569);
-    }
-
-    .reel-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #2f66ff, #346dff);
-      color: white;
-      border: none;
-      border-radius: 18px;
-      padding: 18px;
-      font-size: 17px;
-      margin: 10px 0;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .section-title {
-      font-size: 22px;
-      font-weight: bold;
-      margin: 8px 0 12px;
-    }
-
-    .msg {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #b7ffca;
-      min-height: 20px;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    .note {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #d7e4ff;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    .small {
-      font-size: 13px;
-      color: #d7e4ff;
-      word-break: break-all;
-      line-height: 1.5;
-    }
-
-    .ad-box {
-      margin: 16px 0;
-      background: rgba(7,17,48,0.55);
-      border-radius: 16px;
-      padding: 8px;
-      min-height: 60px;
-    }
-
-    .hidden { display: none; }
-
-    #proofPreview {
-      width: 100%;
-      margin-top: 12px;
-      border-radius: 14px;
-      display: none;
-      max-height: 260px;
-      object-fit: cover;
-    }
-
-    .grid2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 6px 10px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 999px;
-      font-size: 12px;
-      color: #dbe7ff;
-      margin-bottom: 10px;
-    }
-
-    @media (max-width: 640px) {
-      .grid2 { grid-template-columns: 1fr; }
-      .brand-title { font-size: 32px; }
-    }
-  </style>
+<style>
+body{margin:0;background:#081a4a;color:#fff;font-family:sans-serif}
+.topbar{display:flex;justify-content:space-between;padding:10px;background:#0b1d47}
+.box{background:#0b1d47;margin:10px;padding:15px;border-radius:15px}
+.btn{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;background:#3b82f6;color:#fff}
+.hidden{display:none}
+</style>
 </head>
+
 <body>
 
-  <div class="topbar">
-    <div class="uid-box">UID: <span id="uidText">Not logged in</span></div>
-    <div class="wallet-box" onclick="toggleWallet()">₹ <span id="walletBalance">0</span></div>
-  </div>
-
-  <div class="wrap">
-    <div class="brand-wrap">
-      <div class="brand-glow"></div>
-      <h1 class="brand-title">REELOCASH</h1>
-      <p class="brand-tagline">Watch reels. Grow wallet.</p>
-    </div>
-
-    <div class="box" id="loginSection">
-      <div class="title">Login / Signup</div>
-      <input type="email" id="email" placeholder="Enter Email">
-      <input type="password" id="password" placeholder="Enter Password">
-      <input type="text" id="referralInput" placeholder="Referral code (optional)">
-      <button class="btn" onclick="signup()">Signup</button>
-      <button class="btn btn-green" onclick="login()">Login</button>
-      <div class="msg" id="loginMsg"></div>
-    </div>
-
-    <div class="box hidden" id="walletSection">
-      <div class="title">Wallet & Withdrawal</div>
-      <input type="text" id="upiId" placeholder="Enter your UPI ID">
-      <input type="number" id="withdrawAmount" placeholder="Enter amount">
-      <button class="btn btn-green" onclick="requestWithdrawal()">Withdrawal</button>
-      <div class="msg" id="withdrawMsg"></div>
-    </div>
-
-    <div class="box hidden" id="referralSection">
-      <div class="title">Your Referral</div>
-      <div class="small"><b>Referral Code:</b></div>
-      <div class="small" id="referralCodeText">-</div>
-      <button class="btn btn-gray" onclick="copyReferralCode()">Copy Referral Code</button>
-
-      <div style="height:12px;"></div>
-
-      <div class="small"><b>Referral Link:</b></div>
-      <div class="small" id="referralLinkText">-</div>
-      <button class="btn btn-gray" onclick="copyReferralLink()">Copy Referral Link</button>
-
-      <div class="note">Per successful referral, referrer wallet me ₹5 add hoga.</div>
-      <div class="msg" id="referralMsg"></div>
-    </div>
-
-    <div class="box hidden" id="reelsSection">
-      <div class="hero-title">Welcome to Reelocash</div>
-      <div class="hero-sub">You can earn money by watching reels</div>
-
-      <div style="text-align:center;margin-top:18px;font-size:16px;font-weight:bold;">
-        More update join our channel or group
-      </div>
-
-      <div class="grid2" style="margin-top:12px;">
-        <button class="btn btn-green" onclick="window.open('https://t.me/reelocash','_blank')">
-          📢 Join Channel
-        </button>
-        <button class="btn" onclick="window.open('https://t.me/officialreelocash','_blank')">
-          👥 Join Group
-        </button>
-      </div>
-
-      <div class="ad-box" style="margin-top:18px;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-2895875871668188"
-             data-ad-slot="6015688161"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-      </div>
-
-      <div class="section-title">Watch Reels</div>
-
-      <button class="reel-btn" onclick="openReel(0)">▶ Reel 1</button>
-      <button class="reel-btn" onclick="openReel(1)">▶ Reel 2</button>
-      <button class="reel-btn" onclick="openReel(2)">▶ Reel 3</button>
-      <button class="reel-btn" onclick="openReel(3)">▶ Reel 4</button>
-      <button class="reel-btn" onclick="openReel(4)">▶ Reel 5</button>
-      <button class="reel-btn" onclick="openReel(5)">▶ Reel 6</button>
-      <button class="reel-btn" onclick="openReel(6)">▶ Reel 7</button>
-      <button class="reel-btn" onclick="openReel(7)">▶ Reel 8</button>
-      <button class="reel-btn" onclick="openReel(8)">▶ Reel 9</button>
-      <button class="reel-btn" onclick="openReel(9)">▶ Reel 10</button>
-      <button class="reel-btn" onclick="openReel(10)">▶ Reel 11</button>
-      <button class="reel-btn" onclick="openReel(11)">▶ Reel 12</button>
-    </div>
-
-    <div class="box hidden" id="proofSection">
-      <div class="pill">Submission</div>
-      <div class="title">📸 Send Proof</div>
-      <input type="text" id="taskTitle" placeholder="Task title">
-      <input type="number" id="taskReward" placeholder="Reward amount">
-      <input type="file" id="proofFile" accept="image/*" onchange="previewProof(event)">
-      <img id="proofPreview" alt="Proof preview">
-      <textarea id="proofText" placeholder="Write proof details"></textarea>
-      <button class="btn" onclick="submitProof()">Send Proof</button>
-      <div class="msg" id="proofMsg"></div>
-    </div>
-
-    <div class="box hidden" id="logoutSection">
-      <button class="btn btn-red" onclick="logout()">Logout</button>
-    </div>
-  </div>
-
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      setDoc,
-      addDoc,
-      collection,
-      serverTimestamp,
-      query,
-      where,
-      getDocs,
-      runTransaction
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    import {
-      getStorage,
-      ref,
-      uploadBytes,
-      getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
-      authDomain: "reelocash.firebaseapp.com",
-      projectId: "reelocash",
-      storageBucket: "reelocash.firebasestorage.app",
-      messagingSenderId: "134046729864",
-      appId: "1:134046729864:web:7cea62a512f3141155013d"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    let currentUser = null;
-    let currentWallet = 0;
-    let currentReferralCode = "";
-    let currentReferralLink = "";
-    let pendingReferralCode = "";
-
-    function generateReferralCode() {
-      return "REF" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    }
-
-    async function generateUniqueReferralCode() {
-      let code = "";
-      let exists = true;
-      while (exists) {
-        code = generateReferralCode();
-        const q = query(collection(db, "users"), where("referralCode", "==", code));
-        const snap = await getDocs(q);
-        exists = !snap.empty;
-      }
-      return code;
-    }
-
-    function setTopBar(uid, wallet) {
-      document.getElementById("uidText").innerText = uid || "Not logged in";
-      document.getElementById("walletBalance").innerText = wallet || 0;
-    }
-
-    function showUserUI() {
-      document.getElementById("loginSection").classList.add("hidden");
-      document.getElementById("walletSection").classList.add("hidden");
-      document.getElementById("referralSection").classList.remove("hidden");
-      document.getElementById("reelsSection").classList.remove("hidden");
-      document.getElementById("proofSection").classList.remove("hidden");
-      document.getElementById("logoutSection").classList.remove("hidden");
-    }
-
-    function showGuestUI() {
-      document.getElementById("loginSection").classList.remove("hidden");
-      document.getElementById("walletSection").classList.add("hidden");
-      document.getElementById("referralSection").classList.add("hidden");
-      document.getElementById("reelsSection").classList.add("hidden");
-      document.getElementById("proofSection").classList.add("hidden");
-      document.getElementById("logoutSection").classList.add("hidden");
-    }
-
-    function getRefFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("ref") || "";
-    }
-
-    window.toggleWallet = function () {
-      if (!currentUser) return;
-      document.getElementById("walletSection").classList.toggle("hidden");
-    };
-
-    async function ensureUserDoc(user, referredCode = "") {
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-
-      if (!snap.exists()) {
-        const referralCode = await generateUniqueReferralCode();
-        const referralLink = `${window.location.origin}${window.location.pathname}?ref=${referralCode}`;
-        let referredBy = "";
-
-        if (referredCode) {
-          const q = query(collection(db, "users"), where("referralCode", "==", referredCode));
-          const refSnap = await getDocs(q);
-
-          if (!refSnap.empty) {
-            const referrerDoc = refSnap.docs[0];
-            const referrerUid = referrerDoc.id;
-
-            if (referrerUid !== user.uid) {
-              referredBy = referrerUid;
-              const referrerRef = doc(db, "users", referrerUid);
-
-              await runTransaction(db, async (tx) => {
-                const refUserSnap = await tx.get(referrerRef);
-                const refUserData = refUserSnap.data();
-                tx.update(referrerRef, {
-                  wallet: Number(refUserData.wallet || 0) + 5
-                });
-              });
-
-              await addDoc(collection(db, "referrals"), {
-                referrerUid,
-                referredUid: user.uid,
-                reward: 5,
-                status: "completed",
-                createdAt: serverTimestamp()
-              });
-            }
-          }
-        }
-
-        await setDoc(userRef, {
-          email: user.email || "",
-          wallet: 0,
-          role: "user",
-          referralCode,
-          referralLink,
-          referredBy,
-          createdAt: serverTimestamp()
-        });
-      }
-
-      const updated = await getDoc(userRef);
-      const data = updated.data() || {};
-
-      currentWallet = data.wallet || 0;
-      currentReferralCode = data.referralCode || "";
-      currentReferralLink = data.referralLink || "";
-
-      setTopBar(user.uid, currentWallet);
-      document.getElementById("referralCodeText").innerText = currentReferralCode || "-";
-      document.getElementById("referralLinkText").innerText = currentReferralLink || "-";
-    }
-
-    window.signup = async function () {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const manualRef = document.getElementById("referralInput").value.trim().toUpperCase();
-
-      if (!email || !password) {
-        document.getElementById("loginMsg").innerText = "Email aur password dalo";
-        return;
-      }
-
-      try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        const finalRef = manualRef || pendingReferralCode || "";
-        await ensureUserDoc(userCred.user, finalRef);
-        document.getElementById("loginMsg").innerText = "Signup Success ✅";
-      } catch (e) {
-        document.getElementById("loginMsg").innerText = e.message;
-      }
-    };
-
-    window.login = async function () {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      if (!email || !password) {
-        document.getElementById("loginMsg").innerText = "Email aur password dalo";
-        return;
-      }
-
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        document.getElementById("loginMsg").innerText = "Login Success ✅";
-      } catch (e) {
-        document.getElementById("loginMsg").innerText = e.message;
-      }
-    };
-
-    window.logout = async function () {
-      await signOut(auth);
-    };
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        showUserUI();
-        await ensureUserDoc(user);
-      } else {
-        currentUser = null;
-        setTopBar("", 0);
-        showGuestUI();
-      }
-    });
-
-    window.copyReferralCode = async function () {
-      try {
-        await navigator.clipboard.writeText(currentReferralCode);
-        document.getElementById("referralMsg").innerText = "Referral code copied ✅";
-      } catch {
-        document.getElementById("referralMsg").innerText = "Copy failed";
-      }
-    };
-
-    window.copyReferralLink = async function () {
-      try {
-        await navigator.clipboard.writeText(currentReferralLink);
-        document.getElementById("referralMsg").innerText = "Referral link copied ✅";
-      } catch {
-        document.getElementById("referralMsg").innerText = "Copy failed";
-      }
-    };
-
-    window.previewProof = function (event) {
-      const file = event.target.files[0];
-      const preview = document.getElementById("proofPreview");
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-      }
-    };
-
-    window.submitProof = async function () {
-      const title = document.getElementById("taskTitle").value.trim();
-      const reward = Number(document.getElementById("taskReward").value);
-      const proof = document.getElementById("proofText").value.trim();
-      const file = document.getElementById("proofFile").files[0];
-
-      if (!currentUser) {
-        document.getElementById("proofMsg").innerText = "Please login first";
-        return;
-      }
-
-      if (!title || !reward || !proof || !file) {
-        document.getElementById("proofMsg").innerText = "Sab fields bharo aur screenshot select karo";
-        return;
-      }
-
-      try {
-        document.getElementById("proofMsg").innerText = "Uploading proof...";
-
-        const filePath = `proofs/${currentUser.uid}/${Date.now()}_${file.name}`;
-        const storageRef = ref(storage, filePath);
-        await uploadBytes(storageRef, file);
-        const screenshotUrl = await getDownloadURL(storageRef);
-
-        await addDoc(collection(db, "tasks"), {
-          userId: currentUser.uid,
-          title,
-          reward,
-          proof,
-          screenshotUrl,
-          status: "pending",
-          adminMessage: "Proof submitted successfully. Waiting for verification.",
-          createdAt: serverTimestamp()
-        });
-
-        document.getElementById("taskTitle").value = "";
-        document.getElementById("taskReward").value = "";
-        document.getElementById("proofText").value = "";
-        document.getElementById("proofFile").value = "";
-        document.getElementById("proofPreview").style.display = "none";
-        document.getElementById("proofMsg").innerText = "Proof submitted successfully ✅";
-      } catch (e) {
-        document.getElementById("proofMsg").innerText = e.message;
-      }
-    };
-
-    window.requestWithdrawal = async function () {
-      const upiId = document.getElementById("upiId").value.trim();
-      const amount = Number(document.getElementById("withdrawAmount").value);
-
-      if (!currentUser) {
-        document.getElementById("withdrawMsg").innerText = "Please login first";
-        return;
-      }
-
-      if (!upiId || !amount) {
-        document.getElementById("withdrawMsg").innerText = "Enter your UPI ID and amount";
-        return;
-      }
-
-      if (amount < 5) {
-        document.getElementById("withdrawMsg").innerText = "Minimum withdrawal ₹5 hai";
-        return;
-      }
-
-      if (amount > currentWallet) {
-        document.getElementById("withdrawMsg").innerText = "Insufficient wallet balance";
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, "withdrawals"), {
-          userId: currentUser.uid,
-          upiId,
-          amount,
-          status: "pending",
-          adminMessage: "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.",
-          createdAt: serverTimestamp()
-        });
-
-        document.getElementById("withdrawMsg").innerText = "Withdrawal request submitted ✅";
-        document.getElementById("upiId").value = "";
-        document.getElementById("withdrawAmount").value = "";
-      } catch (e) {
-        document.getElementById("withdrawMsg").innerText = e.message;
-      }
-    };
-
-    pendingReferralCode = (getRefFromUrl() || "").toUpperCase();
-    if (pendingReferralCode) {
-      document.getElementById("referralInput").value = pendingReferralCode;
-    }
-
-    window.openReel = function (i) {
-      const reels = [
-        "https://www.instagram.com/reel/DWMdSL0k_Pj/",
-        "https://www.instagram.com/reel/DLQ62B0S4Gu/",
-        "https://www.instagram.com/reel/DWY9J2WkaTy/",
-        "https://www.instagram.com/reel/DWeNkWYEV5a/",
-        "https://www.instagram.com/reel/DWbuyUfEwIW/",
-        "https://www.instagram.com/reel/DWWiUlJkQNK/",
-        "https://www.instagram.com/reel/DWUOP0gE6tq/",
-        "https://www.instagram.com/reel/DWRRPu0iBEp/",
-        "https://www.instagram.com/reel/DWOp86DEZlS/",
-        "https://www.instagram.com/reel/DWIy8vPEZfq/",
-        "https://www.instagram.com/reel/DWDYV3mkduC/",
-        "https://www.instagram.com/reel/DWA2MyGkQtQ/"
-      ];
-      window.open(reels[i], "_blank");
-    };
-  </script>
+<div class="topbar">
+<div>UID: <span id="uidText">-</span></div>
+<div onclick="toggleWallet()">₹ <span id="walletBalance">0</span></div>
+</div>
+
+<div class="box" id="loginSection">
+<h3>Login / Signup</h3>
+<input id="email" placeholder="Email"><br><br>
+<input id="password" placeholder="Password"><br><br>
+<input id="referralInput" placeholder="Referral Code (optional)">
+<button class="btn" onclick="signup()">Signup</button>
+<button class="btn" onclick="login()">Login</button>
+<p id="loginMsg"></p>
+</div>
+
+<div class="box hidden" id="referralSection">
+<h3>Your Referral</h3>
+<p id="referralCodeText"></p>
+<button class="btn" onclick="copyReferralCode()">Copy Code</button>
+<p id="referralLinkText"></p>
+<button class="btn" onclick="copyReferralLink()">Copy Link</button>
+</div>
+
+<div class="box hidden" id="reelsSection">
+<h3>Watch Reels</h3>
+
+<button class="btn" onclick="openReel(0)">Reel 1</button>
+<button class="btn" onclick="openReel(1)">Reel 2</button>
+<button class="btn" onclick="openReel(2)">Reel 3</button>
+<button class="btn" onclick="openReel(3)">Reel 4</button>
+<button class="btn" onclick="openReel(4)">Reel 5</button>
+<button class="btn" onclick="openReel(5)">Reel 6</button>
+<button class="btn" onclick="openReel(6)">Reel 7</button>
+<button class="btn" onclick="openReel(7)">Reel 8</button>
+<button class="btn" onclick="openReel(8)">Reel 9</button>
+<button class="btn" onclick="openReel(9)">Reel 10</button>
+<button class="btn" onclick="openReel(10)">Reel 11</button>
+<button class="btn" onclick="openReel(11)">Reel 12</button>
+
+</div>
+
+<div class="box hidden" id="walletSection">
+<h3>Withdrawal</h3>
+<input id="upiId" placeholder="UPI ID">
+<input id="withdrawAmount" placeholder="Amount">
+<button class="btn" onclick="requestWithdrawal()">Withdraw</button>
+<p id="withdrawMsg"></p>
+</div>
+
+<div class="box hidden" id="proofSection">
+<h3>Send Proof</h3>
+<input id="taskTitle" placeholder="Task Title">
+<input id="taskReward" placeholder="Reward">
+<input type="file" id="proofFile">
+<textarea id="proofText" placeholder="Details"></textarea>
+<button class="btn" onclick="submitProof()">Submit</button>
+<p id="proofMsg"></p>
+</div>
+
+<div class="box hidden" id="logoutSection">
+<button class="btn" onclick="logout()">Logout</button>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { getFirestore, doc, getDoc, setDoc, addDoc, collection, serverTimestamp, query, where, getDocs, runTransaction }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
+authDomain: "reelocash.firebaseapp.com",
+projectId: "reelocash",
+storageBucket: "reelocash.firebasestorage.app",
+messagingSenderId: "134046729864",
+appId: "1:134046729864:web:7cea62a512f3141155013d"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let pendingReferralCode = "";
+
+// referral from URL
+function getRefFromUrl(){
+const params = new URLSearchParams(window.location.search);
+return params.get("ref") || "";
+}
+
+function applyReferral(){
+const code = getRefFromUrl().toUpperCase();
+pendingReferralCode = code;
+if(code){
+document.getElementById("referralInput").value = code;
+}
+}
+applyReferral();
+
+// signup
+window.signup = async ()=>{
+const email = email.value;
+const pass = password.value;
+const ref = referralInput.value || pendingReferralCode;
+
+const user = await createUserWithEmailAndPassword(auth,email,pass);
+
+let code = "REF"+Math.random().toString(36).substring(2,7).toUpperCase();
+let link = location.origin+"?ref="+code;
+
+await setDoc(doc(db,"users",user.user.uid),{
+wallet:0,
+referralCode:code,
+referralLink:link
+});
+
+// reward referrer
+if(ref){
+const q = query(collection(db,"users"),where("referralCode","==",ref));
+const snap = await getDocs(q);
+if(!snap.empty){
+const refDoc = snap.docs[0];
+await runTransaction(db, async (tx)=>{
+const data = refDoc.data();
+tx.update(refDoc.ref,{wallet:(data.wallet||0)+5});
+});
+}
+}
+
+loginMsg.innerText="Signup success";
+}
+
+// login
+window.login = async ()=>{
+await signInWithEmailAndPassword(auth,email.value,password.value);
+}
+
+// logout
+window.logout = ()=> signOut(auth);
+
+// auth state
+onAuthStateChanged(auth, async user=>{
+if(user){
+currentUser=user;
+uidText.innerText=user.uid;
+
+loginSection.classList.add("hidden");
+reelsSection.classList.remove("hidden");
+referralSection.classList.remove("hidden");
+proofSection.classList.remove("hidden");
+logoutSection.classList.remove("hidden");
+
+const snap = await getDoc(doc(db,"users",user.uid));
+const data = snap.data();
+
+walletBalance.innerText=data.wallet||0;
+referralCodeText.innerText=data.referralCode;
+referralLinkText.innerText=data.referralLink;
+
+}else{
+loginSection.classList.remove("hidden");
+}
+});
+
+// reels
+window.openReel = (i)=>{
+const links=[
+"https://www.instagram.com/reel/DWMdSL0k_Pj/",
+"https://www.instagram.com/reel/DLQ62B0S4Gu/",
+"https://www.instagram.com/reel/DWY9J2WkaTy/",
+"https://www.instagram.com/reel/DWeNkWYEV5a/",
+"https://www.instagram.com/reel/DWbuyUfEwIW/",
+"https://www.instagram.com/reel/DWWiUlJkQNK/",
+"https://www.instagram.com/reel/DWUOP0gE6tq/",
+"https://www.instagram.com/reel/DWRRPu0iBEp/",
+"https://www.instagram.com/reel/DWOp86DEZlS/",
+"https://www.instagram.com/reel/DWIy8vPEZfq/",
+"https://www.instagram.com/reel/DWDYV3mkduC/",
+"https://www.instagram.com/reel/DWA2MyGkQtQ/"
+];
+window.open(links[i]);
+};
+
+// copy
+window.copyReferralCode=()=>navigator.clipboard.writeText(referralCodeText.innerText);
+window.copyReferralLink=()=>navigator.clipboard.writeText(referralLinkText.innerText);
+
+</script>
+
 </body>
 </html>
