@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
+<title>Reelocash Admin</title>
 
 <style>
 body{
 margin:0;
-background:#0a1f5c;
+background:linear-gradient(180deg,#050f2c,#0a1f5c);
 color:white;
 font-family:sans-serif;
 }
@@ -20,15 +20,17 @@ padding:15px;
 }
 
 .box{
-background:#0b1d47;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
 padding:15px;
 margin-top:15px;
-border-radius:12px;
+border-radius:15px;
 }
 
 .btn{
 padding:10px;
-margin-top:10px;
+margin-top:8px;
 border:none;
 border-radius:8px;
 color:white;
@@ -38,6 +40,7 @@ cursor:pointer;
 .green{background:#22c55e;}
 .red{background:#ef4444;}
 .blue{background:#3b82f6;}
+.gray{background:#64748b;}
 
 input{
 width:100%;
@@ -53,7 +56,7 @@ border:none;
 
 <div class="wrap">
 
-<h2>🔐 Admin Panel</h2>
+<h2>🔥 REELOCASH ADMIN</h2>
 
 <div id="loginBox" class="box">
 <input id="email" placeholder="Admin Email">
@@ -62,7 +65,7 @@ border:none;
 <p id="msg"></p>
 </div>
 
-<div id="adminPanel" style="display:none">
+<div id="panel" style="display:none">
 
 <div class="box">
 <h3>📸 Proof Requests</h3>
@@ -83,13 +86,8 @@ border:none;
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getAuth,
-signInWithEmailAndPassword,
-signOut,
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
 getFirestore,
@@ -97,7 +95,8 @@ collection,
 getDocs,
 doc,
 updateDoc,
-getDoc
+getDoc,
+runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -132,18 +131,18 @@ onAuthStateChanged(auth, async user=>{
 if(user && user.email===ADMIN_EMAIL){
 
 loginBox.style.display="none";
-adminPanel.style.display="block";
+panel.style.display="block";
 
 loadTasks();
 loadWithdraw();
 
 }else{
 loginBox.style.display="block";
-adminPanel.style.display="none";
+panel.style.display="none";
 }
 });
 
-// load proof
+// load tasks
 async function loadTasks(){
 const snap = await getDocs(collection(db,"tasks"));
 let html="";
@@ -156,12 +155,12 @@ html+=`
 <p><b>Title:</b> ${d.title}</p>
 <p><b>User:</b> ${d.userId}</p>
 <p><b>Reward:</b> ₹${d.reward}</p>
-<p>${d.proof}</p>
 
 <a href="${d.screenshotUrl}" target="_blank">View Proof</a><br>
 
 <button class="btn green" onclick="approve('${docu.id}','${d.userId}',${d.reward})">Approve</button>
 <button class="btn red" onclick="reject('${docu.id}')">Reject</button>
+<button class="btn gray" onclick="ban('${d.userId}')">Ban User</button>
 </div>
 `;
 });
@@ -169,19 +168,21 @@ html+=`
 tasks.innerHTML=html;
 }
 
-// approve proof
+// approve
 window.approve = async (id,uid,reward)=>{
 
+await runTransaction(db, async (tx)=>{
 const userRef = doc(db,"users",uid);
-const userSnap = await getDoc(userRef);
-const data = userSnap.data();
+const snap = await tx.get(userRef);
+const data = snap.data();
 
-await updateDoc(userRef,{
+tx.update(userRef,{
 wallet:(data.wallet||0)+reward
 });
 
-await updateDoc(doc(db,"tasks",id),{
+tx.update(doc(db,"tasks",id),{
 status:"approved"
+});
 });
 
 alert("Approved ✅");
@@ -195,6 +196,14 @@ status:"rejected"
 });
 alert("Rejected ❌");
 loadTasks();
+}
+
+// ban user
+window.ban = async (uid)=>{
+await updateDoc(doc(db,"users",uid),{
+blocked:true
+});
+alert("User banned 🚫");
 }
 
 // withdraw
@@ -211,7 +220,7 @@ html+=`
 <p><b>UPI:</b> ${d.upiId}</p>
 <p><b>Amount:</b> ₹${d.amount}</p>
 
-<button class="btn green" onclick="paid('${docu.id}','${d.userId}',${d.amount})">Paid</button>
+<button class="btn green" onclick="paid('${docu.id}','${d.userId}',${d.amount})">Mark Paid</button>
 <button class="btn red" onclick="rejectW('${docu.id}')">Reject</button>
 </div>
 `;
@@ -223,16 +232,18 @@ withdraw.innerHTML=html;
 // paid
 window.paid = async (id,uid,amt)=>{
 
+await runTransaction(db, async (tx)=>{
 const userRef = doc(db,"users",uid);
-const snap = await getDoc(userRef);
+const snap = await tx.get(userRef);
 const data = snap.data();
 
-await updateDoc(userRef,{
+tx.update(userRef,{
 wallet:(data.wallet||0)-amt
 });
 
-await updateDoc(doc(db,"withdrawals",id),{
+tx.update(doc(db,"withdrawals",id),{
 status:"paid"
+});
 });
 
 alert("Payment Done ✅");
