@@ -1,297 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reelocash Admin</title>
-  <link rel="stylesheet" href="style.css"/>
-  <style>
-    .hidden { display:none; }
-    .wrap { max-width: 900px; margin: 20px auto; padding: 16px; color: white; }
-    .card { background:#0f1d4a; border-radius:16px; padding:16px; margin-bottom:16px; }
-    input { width:100%; padding:12px; margin:8px 0; border-radius:10px; border:none; }
-    button { padding:10px 14px; border:none; border-radius:10px; cursor:pointer; }
-    .btn { background:#2f66ff; color:white; }
-    .btn-danger { background:#dc2626; color:white; }
-    .btn-success { background:#16a34a; color:white; }
-    .row { border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:12px; margin-top:10px; }
-    a { color:#93c5fd; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+body{
+margin:0;
+background:#0a1f5c;
+color:white;
+font-family:sans-serif;
+}
+
+.wrap{
+max-width:900px;
+margin:auto;
+padding:15px;
+}
+
+.box{
+background:#0b1d47;
+padding:15px;
+margin-top:15px;
+border-radius:12px;
+}
+
+.btn{
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+.green{background:#22c55e;}
+.red{background:#ef4444;}
+.blue{background:#3b82f6;}
+
+input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:none;
+}
+</style>
 </head>
-<body style="background:#07163d;">
-  <div class="wrap">
-    <div id="loadingBox" class="card">Checking access...</div>
 
-    <div id="loginBox" class="card hidden">
-      <h2>Admin Login</h2>
-      <input id="email" type="email" placeholder="Admin email" />
-      <input id="password" type="password" placeholder="Password" />
-      <button id="loginBtn" class="btn">Login</button>
-      <p id="loginMsg"></p>
-    </div>
+<body>
 
-    <div id="adminBox" class="hidden">
-      <div class="card">
-        <h2>Admin Panel</h2>
-        <button id="logoutBtn" class="btn-danger">Logout</button>
-      </div>
+<div class="wrap">
 
-      <div class="card">
-        <h3>Proof Requests</h3>
-        <div id="tasksBox">Loading...</div>
-      </div>
+<h2>🔐 Admin Panel</h2>
 
-      <div class="card">
-        <h3>Withdrawal Requests</h3>
-        <div id="withdrawBox">Loading...</div>
-      </div>
-    </div>
-  </div>
+<div id="loginBox" class="box">
+<input id="email" placeholder="Admin Email">
+<input id="password" placeholder="Password">
+<button class="btn blue" onclick="login()">Login</button>
+<p id="msg"></p>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      collection,
-      getDocs,
-      query,
-      orderBy,
-      updateDoc,
-      runTransaction
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<div id="adminPanel" style="display:none">
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
-      authDomain: "reelocash.firebaseapp.com",
-      projectId: "reelocash",
-      storageBucket: "reelocash.firebasestorage.app",
-      messagingSenderId: "134046729864",
-      appId: "1:134046729864:web:7cea62a512f3141155013d"
-    };
+<div class="box">
+<h3>📸 Proof Requests</h3>
+<div id="tasks"></div>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+<div class="box">
+<h3>💰 Withdraw Requests</h3>
+<div id="withdraw"></div>
+</div>
 
-    const loadingBox = document.getElementById("loadingBox");
-    const loginBox = document.getElementById("loginBox");
-    const adminBox = document.getElementById("adminBox");
-    const loginMsg = document.getElementById("loginMsg");
+<button class="btn red" onclick="logout()">Logout</button>
 
-    async function isAdmin(uid) {
-      const snap = await getDoc(doc(db, "users", uid));
-      return snap.exists() && snap.data().role === "admin";
-    }
+</div>
 
-    function showLogin(msg = "") {
-      loadingBox.classList.add("hidden");
-      adminBox.classList.add("hidden");
-      loginBox.classList.remove("hidden");
-      loginMsg.textContent = msg;
-    }
+</div>
 
-    function showAdmin() {
-      loadingBox.classList.add("hidden");
-      loginBox.classList.add("hidden");
-      adminBox.classList.remove("hidden");
-    }
+<script type="module">
 
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-      if (!email || !password) {
-        loginMsg.textContent = "Email aur password dalo.";
-        return;
-      }
+import {
+getAuth,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (e) {
-        loginMsg.textContent = e.message;
-      }
-    });
+import {
+getFirestore,
+collection,
+getDocs,
+doc,
+updateDoc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await signOut(auth);
-      showLogin("Logged out.");
-    });
+const firebaseConfig = {
+apiKey:"AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
+authDomain:"reelocash.firebaseapp.com",
+projectId:"reelocash",
+storageBucket:"reelocash.firebasestorage.app",
+messagingSenderId:"134046729864",
+appId:"1:134046729864:web:7cea62a512f3141155013d"
+};
 
-    async function loadTasks() {
-      const box = document.getElementById("tasksBox");
-      const snap = await getDocs(query(collection(db, "tasks"), orderBy("createdAt", "desc")));
-      if (snap.empty) {
-        box.innerHTML = "No proof requests.";
-        return;
-      }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-      let html = "";
-      snap.forEach(d => {
-        const x = d.data();
-        html += `
-          <div class="row">
-            <div><b>Task:</b> ${x.title || "-"}</div>
-            <div><b>User:</b> ${x.userId || "-"}</div>
-            <div><b>Reward:</b> ₹${x.reward || 0}</div>
-            <div><b>Status:</b> ${x.status || "pending"}</div>
-            <div><b>Proof:</b> ${x.proof || "-"}</div>
-            <div style="margin:8px 0;"><a href="${x.screenshotUrl || "#"}" target="_blank">Open Screenshot</a></div>
-            <button class="btn-success" onclick="approveTask('${d.id}','${x.userId}',${Number(x.reward || 0)})">Approve</button>
-            <button class="btn-danger" onclick="rejectTask('${d.id}')">Reject</button>
-          </div>
-        `;
-      });
-      box.innerHTML = html;
-    }
+const ADMIN_EMAIL = "ambrishtiwari857@gmail.com";
 
-    async function loadWithdrawals() {
-      const box = document.getElementById("withdrawBox");
-      const snap = await getDocs(query(collection(db, "withdrawals"), orderBy("createdAt", "desc")));
-      if (snap.empty) {
-        box.innerHTML = "No withdrawal requests.";
-        return;
-      }
+// login
+window.login = async ()=>{
+try{
+await signInWithEmailAndPassword(auth,email.value,password.value);
+}catch(e){
+msg.innerText=e.message;
+}
+}
 
-      let html = "";
-      snap.forEach(d => {
-        const x = d.data();
-        html += `
-          <div class="row">
-            <div><b>User:</b> ${x.userId || "-"}</div>
-            <div><b>UPI:</b> ${x.upiId || "-"}</div>
-            <div><b>Amount:</b> ₹${x.amount || 0}</div>
-            <div><b>Status:</b> ${x.status || "pending"}</div>
-            <button class="btn" onclick="markProcessing('${d.id}')">Processing</button>
-            <button class="btn-success" onclick="markPaid('${d.id}','${x.userId}',${Number(x.amount || 0)})">Mark Paid</button>
-            <button class="btn-danger" onclick="rejectWithdrawal('${d.id}')">Reject</button>
-          </div>
-        `;
-      });
-      box.innerHTML = html;
-    }
+// logout
+window.logout = ()=>signOut(auth);
 
-    window.approveTask = async (taskId, userId, reward) => {
-      const userRef = doc(db, "users", userId);
-      const taskRef = doc(db, "tasks", taskId);
+// auth check
+onAuthStateChanged(auth, async user=>{
+if(user && user.email===ADMIN_EMAIL){
 
-      try {
-        await runTransaction(db, async (tx) => {
-          const userSnap = await tx.get(userRef);
-          const taskSnap = await tx.get(taskRef);
-          if (!userSnap.exists()) throw new Error("User not found");
-          if (!taskSnap.exists()) throw new Error("Task not found");
+loginBox.style.display="none";
+adminPanel.style.display="block";
 
-          const task = taskSnap.data();
-          if (task.status === "approved") throw new Error("Already approved");
+loadTasks();
+loadWithdraw();
 
-          const wallet = Number(userSnap.data().wallet || 0) + Number(reward || 0);
-          tx.update(userRef, { wallet });
-          tx.update(taskRef, {
-            status: "approved",
-            adminMessage: "Verified successfully."
-          });
-        });
-        await loadTasks();
-      } catch (e) {
-        alert(e.message);
-      }
-    };
+}else{
+loginBox.style.display="block";
+adminPanel.style.display="none";
+}
+});
 
-    window.rejectTask = async (taskId) => {
-      try {
-        await updateDoc(doc(db, "tasks", taskId), {
-          status: "rejected",
-          adminMessage: "Proof rejected."
-        });
-        await loadTasks();
-      } catch (e) {
-        alert(e.message);
-      }
-    };
+// load proof
+async function loadTasks(){
+const snap = await getDocs(collection(db,"tasks"));
+let html="";
 
-    window.markProcessing = async (withdrawId) => {
-      try {
-        await updateDoc(doc(db, "withdrawals", withdrawId), {
-          status: "processing",
-          adminMessage: "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time."
-        });
-        await loadWithdrawals();
-      } catch (e) {
-        alert(e.message);
-      }
-    };
+snap.forEach(docu=>{
+const d = docu.data();
 
-    window.markPaid = async (withdrawId, userId, amount) => {
-      const userRef = doc(db, "users", userId);
-      const withdrawRef = doc(db, "withdrawals", withdrawId);
+html+=`
+<div class="box">
+<p><b>Title:</b> ${d.title}</p>
+<p><b>User:</b> ${d.userId}</p>
+<p><b>Reward:</b> ₹${d.reward}</p>
+<p>${d.proof}</p>
 
-      try {
-        await runTransaction(db, async (tx) => {
-          const userSnap = await tx.get(userRef);
-          const wSnap = await tx.get(withdrawRef);
-          if (!userSnap.exists()) throw new Error("User not found");
-          if (!wSnap.exists()) throw new Error("Withdrawal not found");
+<a href="${d.screenshotUrl}" target="_blank">View Proof</a><br>
 
-          const withdrawal = wSnap.data();
-          if (withdrawal.status === "completed") throw new Error("Already paid");
+<button class="btn green" onclick="approve('${docu.id}','${d.userId}',${d.reward})">Approve</button>
+<button class="btn red" onclick="reject('${docu.id}')">Reject</button>
+</div>
+`;
+});
 
-          const currentWallet = Number(userSnap.data().wallet || 0);
-          if (currentWallet < Number(amount || 0)) throw new Error("Insufficient wallet");
+tasks.innerHTML=html;
+}
 
-          tx.update(userRef, { wallet: currentWallet - Number(amount || 0) });
-          tx.update(withdrawRef, {
-            status: "completed",
-            adminMessage: "Withdrawal successful. Please check your UPI."
-          });
-        });
-        await loadWithdrawals();
-      } catch (e) {
-        alert(e.message);
-      }
-    };
+// approve proof
+window.approve = async (id,uid,reward)=>{
 
-    window.rejectWithdrawal = async (withdrawId) => {
-      try {
-        await updateDoc(doc(db, "withdrawals", withdrawId), {
-          status: "rejected",
-          adminMessage: "Withdrawal rejected."
-        });
-        await loadWithdrawals();
-      } catch (e) {
-        alert(e.message);
-      }
-    };
+const userRef = doc(db,"users",uid);
+const userSnap = await getDoc(userRef);
+const data = userSnap.data();
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        showLogin();
-        return;
-      }
+await updateDoc(userRef,{
+wallet:(data.wallet||0)+reward
+});
 
-      try {
-        const ok = await isAdmin(user.uid);
-        if (!ok) {
-          await signOut(auth);
-          showLogin("Access denied. Admin only.");
-          return;
-        }
+await updateDoc(doc(db,"tasks",id),{
+status:"approved"
+});
 
-        showAdmin();
-        await loadTasks();
-        await loadWithdrawals();
-      } catch (e) {
-        await signOut(auth);
-        showLogin("Access check failed.");
-      }
-    });
-  </script>
+alert("Approved ✅");
+loadTasks();
+}
+
+// reject
+window.reject = async (id)=>{
+await updateDoc(doc(db,"tasks",id),{
+status:"rejected"
+});
+alert("Rejected ❌");
+loadTasks();
+}
+
+// withdraw
+async function loadWithdraw(){
+const snap = await getDocs(collection(db,"withdrawals"));
+let html="";
+
+snap.forEach(docu=>{
+const d = docu.data();
+
+html+=`
+<div class="box">
+<p><b>User:</b> ${d.userId}</p>
+<p><b>UPI:</b> ${d.upiId}</p>
+<p><b>Amount:</b> ₹${d.amount}</p>
+
+<button class="btn green" onclick="paid('${docu.id}','${d.userId}',${d.amount})">Paid</button>
+<button class="btn red" onclick="rejectW('${docu.id}')">Reject</button>
+</div>
+`;
+});
+
+withdraw.innerHTML=html;
+}
+
+// paid
+window.paid = async (id,uid,amt)=>{
+
+const userRef = doc(db,"users",uid);
+const snap = await getDoc(userRef);
+const data = snap.data();
+
+await updateDoc(userRef,{
+wallet:(data.wallet||0)-amt
+});
+
+await updateDoc(doc(db,"withdrawals",id),{
+status:"paid"
+});
+
+alert("Payment Done ✅");
+loadWithdraw();
+}
+
+// reject withdraw
+window.rejectW = async (id)=>{
+await updateDoc(doc(db,"withdrawals",id),{
+status:"rejected"
+});
+alert("Rejected ❌");
+loadWithdraw();
+}
+
+</script>
+
 </body>
 </html>
