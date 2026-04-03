@@ -1,194 +1,256 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reelocash</title>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188" crossorigin="anonymous"></script>
-
 <style>
-body{margin:0;background:#081a4a;color:#fff;font-family:sans-serif}
-.topbar{display:flex;justify-content:space-between;padding:10px;background:#0b1d47}
-.box{background:#0b1d47;margin:10px;padding:15px;border-radius:15px}
-.btn{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;background:#3b82f6;color:#fff}
-.hidden{display:none}
+body{
+margin:0;
+background:#07163d;
+color:white;
+font-family:sans-serif;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+padding:10px;
+background:#0a1f5c;
+}
+
+.box{
+background:#0f2a6b;
+margin:10px;
+padding:15px;
+border-radius:12px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:none;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#3b82f6;
+color:white;
+}
+
+.reel{
+padding:15px;
+margin-top:8px;
+background:#2563eb;
+border-radius:10px;
+cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
 <div class="topbar">
-<div>UID: <span id="uidText">-</span></div>
-<div onclick="toggleWallet()">₹ <span id="walletBalance">0</span></div>
+<div id="uid">UID: -</div>
+<div>₹ <span id="wallet">0</span></div>
 </div>
 
-<div class="box" id="loginSection">
+<div class="box" id="loginBox">
 <h3>Login / Signup</h3>
-<input id="email" placeholder="Email"><br><br>
-<input id="password" placeholder="Password"><br><br>
-<input id="referralInput" placeholder="Referral Code (optional)">
-<button class="btn" onclick="signup()">Signup</button>
-<button class="btn" onclick="login()">Login</button>
-<p id="loginMsg"></p>
+<input id="email" placeholder="Email">
+<input id="password" placeholder="Password">
+<input id="ref" placeholder="Referral code (optional)">
+<button onclick="signup()">Signup</button>
+<button onclick="login()">Login</button>
+<p id="msg"></p>
 </div>
 
-<div class="box hidden" id="referralSection">
+<div id="app" style="display:none">
+
+<div class="box">
 <h3>Your Referral</h3>
-<p id="referralCodeText"></p>
-<button class="btn" onclick="copyReferralCode()">Copy Code</button>
-<p id="referralLinkText"></p>
-<button class="btn" onclick="copyReferralLink()">Copy Link</button>
+<p id="code"></p>
+<p id="link"></p>
+<button onclick="copyLink()">Copy Link</button>
 </div>
 
-<div class="box hidden" id="reelsSection">
+<div class="box">
+<h3>Withdraw</h3>
+<select id="method">
+<option value="">Select method</option>
+<option value="upi">UPI</option>
+</select>
+<input id="upi" placeholder="UPI ID">
+<input id="amt" placeholder="Amount">
+<button onclick="withdraw()">Withdraw</button>
+<p id="wmsg"></p>
+</div>
+
+<div class="box">
 <h3>Watch Reels</h3>
 
-<button class="btn" onclick="openReel(0)">Reel 1</button>
-<button class="btn" onclick="openReel(1)">Reel 2</button>
-<button class="btn" onclick="openReel(2)">Reel 3</button>
-<button class="btn" onclick="openReel(3)">Reel 4</button>
-<button class="btn" onclick="openReel(4)">Reel 5</button>
-<button class="btn" onclick="openReel(5)">Reel 6</button>
-<button class="btn" onclick="openReel(6)">Reel 7</button>
-<button class="btn" onclick="openReel(7)">Reel 8</button>
-<button class="btn" onclick="openReel(8)">Reel 9</button>
-<button class="btn" onclick="openReel(9)">Reel 10</button>
-<button class="btn" onclick="openReel(10)">Reel 11</button>
-<button class="btn" onclick="openReel(11)">Reel 12</button>
+<div class="reel" onclick="openReel(0)">Reel 1</div>
+<div class="reel" onclick="openReel(1)">Reel 2</div>
+<div class="reel" onclick="openReel(2)">Reel 3</div>
+<div class="reel" onclick="openReel(3)">Reel 4</div>
+<div class="reel" onclick="openReel(4)">Reel 5</div>
+<div class="reel" onclick="openReel(5)">Reel 6</div>
+<div class="reel" onclick="openReel(6)">Reel 7</div>
+<div class="reel" onclick="openReel(7)">Reel 8</div>
+<div class="reel" onclick="openReel(8)">Reel 9</div>
+<div class="reel" onclick="openReel(9)">Reel 10</div>
+<div class="reel" onclick="openReel(10)">Reel 11</div>
+<div class="reel" onclick="openReel(11)">Reel 12</div>
 
 </div>
 
-<div class="box hidden" id="walletSection">
-<h3>Withdrawal</h3>
-<input id="upiId" placeholder="UPI ID">
-<input id="withdrawAmount" placeholder="Amount">
-<button class="btn" onclick="requestWithdrawal()">Withdraw</button>
-<p id="withdrawMsg"></p>
-</div>
+<button onclick="logout()">Logout</button>
 
-<div class="box hidden" id="proofSection">
-<h3>Send Proof</h3>
-<input id="taskTitle" placeholder="Task Title">
-<input id="taskReward" placeholder="Reward">
-<input type="file" id="proofFile">
-<textarea id="proofText" placeholder="Details"></textarea>
-<button class="btn" onclick="submitProof()">Submit</button>
-<p id="proofMsg"></p>
-</div>
-
-<div class="box hidden" id="logoutSection">
-<button class="btn" onclick="logout()">Logout</button>
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { getFirestore, doc, getDoc, setDoc, addDoc, collection, serverTimestamp, query, where, getDocs, runTransaction }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+getFirestore,
+doc,
+getDoc,
+setDoc,
+addDoc,
+collection,
+serverTimestamp,
+getDocs,
+updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
-authDomain: "reelocash.firebaseapp.com",
-projectId: "reelocash",
-storageBucket: "reelocash.firebasestorage.app",
-messagingSenderId: "134046729864",
-appId: "1:134046729864:web:7cea62a512f3141155013d"
+const firebaseConfig={
+apiKey:"AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
+authDomain:"reelocash.firebaseapp.com",
+projectId:"reelocash",
+storageBucket:"reelocash.firebasestorage.app",
+messagingSenderId:"134046729864",
+appId:"1:134046729864:web:7cea62a512f3141155013d"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth();
+const db=getFirestore();
 
-let currentUser = null;
-let pendingReferralCode = "";
+let userData={};
 
-// referral from URL
-function getRefFromUrl(){
-const params = new URLSearchParams(window.location.search);
-return params.get("ref") || "";
+function genCode(){
+return "REF"+Math.random().toString(36).substr(2,6).toUpperCase();
 }
 
-function applyReferral(){
-const code = getRefFromUrl().toUpperCase();
-pendingReferralCode = code;
-if(code){
-document.getElementById("referralInput").value = code;
-}
-}
-applyReferral();
+async function createUser(user,refCode){
 
-// signup
-window.signup = async ()=>{
-const email = email.value;
-const pass = password.value;
-const ref = referralInput.value || pendingReferralCode;
+const code=genCode();
+const link=window.location.origin+"?ref="+code;
 
-const user = await createUserWithEmailAndPassword(auth,email,pass);
-
-let code = "REF"+Math.random().toString(36).substring(2,7).toUpperCase();
-let link = location.origin+"?ref="+code;
-
-await setDoc(doc(db,"users",user.user.uid),{
+await setDoc(doc(db,"users",user.uid),{
+email:user.email,
 wallet:0,
 referralCode:code,
 referralLink:link
 });
 
-// reward referrer
-if(ref){
-const q = query(collection(db,"users"),where("referralCode","==",ref));
-const snap = await getDocs(q);
-if(!snap.empty){
-const refDoc = snap.docs[0];
-await runTransaction(db, async (tx)=>{
-const data = refDoc.data();
-tx.update(refDoc.ref,{wallet:(data.wallet||0)+5});
+// referral reward
+if(refCode){
+const snap=await getDocs(collection(db,"users"));
+snap.forEach(async d=>{
+if(d.data().referralCode==refCode){
+await updateDoc(doc(db,"users",d.id),{
+wallet:(d.data().wallet||0)+5
 });
 }
+});
 }
 
-loginMsg.innerText="Signup success";
 }
 
-// login
-window.login = async ()=>{
+window.signup=async()=>{
+try{
+const u=await createUserWithEmailAndPassword(auth,email.value,password.value);
+await createUser(u.user,ref.value);
+msg.innerText="Signup success";
+}catch(e){msg.innerText=e.message;}
+}
+
+window.login=async()=>{
+try{
 await signInWithEmailAndPassword(auth,email.value,password.value);
+}catch(e){msg.innerText=e.message;}
 }
 
-// logout
-window.logout = ()=> signOut(auth);
+window.logout=()=>signOut(auth);
 
-// auth state
-onAuthStateChanged(auth, async user=>{
-if(user){
-currentUser=user;
-uidText.innerText=user.uid;
+onAuthStateChanged(auth,async u=>{
+if(u){
+loginBox.style.display="none";
+app.style.display="block";
 
-loginSection.classList.add("hidden");
-reelsSection.classList.remove("hidden");
-referralSection.classList.remove("hidden");
-proofSection.classList.remove("hidden");
-logoutSection.classList.remove("hidden");
+uid.innerText="UID: "+u.uid;
 
-const snap = await getDoc(doc(db,"users",user.uid));
-const data = snap.data();
+const snap=await getDoc(doc(db,"users",u.uid));
+userData=snap.data();
 
-walletBalance.innerText=data.wallet||0;
-referralCodeText.innerText=data.referralCode;
-referralLinkText.innerText=data.referralLink;
+wallet.innerText=userData.wallet||0;
+code.innerText=userData.referralCode;
+
+// FIXED LINK
+const linkVal=window.location.origin+"?ref="+userData.referralCode;
+link.innerText=linkVal;
 
 }else{
-loginSection.classList.remove("hidden");
+loginBox.style.display="block";
+app.style.display="none";
 }
 });
 
-// reels
-window.openReel = (i)=>{
-const links=[
+window.copyLink=()=>{
+navigator.clipboard.writeText(link.innerText);
+alert("Copied");
+}
+
+window.withdraw=async()=>{
+
+if(!method.value){
+wmsg.innerText="Select method";
+return;
+}
+
+if(!upi.value){
+wmsg.innerText="Enter UPI";
+return;
+}
+
+await addDoc(collection(db,"withdrawals"),{
+userId:auth.currentUser.uid,
+upi:upi.value,
+amount:amt.value,
+status:"pending",
+createdAt:serverTimestamp()
+});
+
+wmsg.innerText="Request sent";
+}
+
+window.openReel=i=>{
+const reels=[
 "https://www.instagram.com/reel/DWMdSL0k_Pj/",
 "https://www.instagram.com/reel/DLQ62B0S4Gu/",
 "https://www.instagram.com/reel/DWY9J2WkaTy/",
@@ -202,12 +264,8 @@ const links=[
 "https://www.instagram.com/reel/DWDYV3mkduC/",
 "https://www.instagram.com/reel/DWA2MyGkQtQ/"
 ];
-window.open(links[i]);
-};
-
-// copy
-window.copyReferralCode=()=>navigator.clipboard.writeText(referralCodeText.innerText);
-window.copyReferralLink=()=>navigator.clipboard.writeText(referralLinkText.innerText);
+window.open(reels[i]);
+}
 
 </script>
 
