@@ -1,166 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Reelocash</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reelocash</title>
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188"
-     crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188"
+crossorigin="anonymous"></script>
 
-  <style>
-    body {
-      background:#0b1a3c;
-      color:white;
-      text-align:center;
-      font-family:sans-serif;
-      margin:0;
-      padding:20px 0;
-    }
-    input {
-      padding:12px;
-      margin:6px;
-      width:85%;
-      max-width:350px;
-      border:none;
-      border-radius:8px;
-    }
-    .btn {
-      display:block;
-      width:85%;
-      max-width:350px;
-      margin:10px auto;
-      padding:15px;
-      background:#2f66ff;
-      border:none;
-      border-radius:12px;
-      color:white;
-      font-size:16px;
-    }
-    #msg {
-      min-height: 24px;
-    }
-    .box {
-      width:90%;
-      max-width:500px;
-      margin:15px auto;
-    }
-  </style>
+<style>
+body{margin:0;background:#07163d;color:white;font-family:sans-serif;}
+.topbar{display:flex;justify-content:space-between;padding:10px;background:#0a1f5c;}
+.box{background:#0b1d47;margin:10px;border-radius:12px;padding:15px;}
+.btn{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;background:#2f66ff;color:white;}
+.reel-btn{width:100%;padding:15px;margin:8px 0;border:none;border-radius:10px;background:#2f66ff;color:white;}
+</style>
 </head>
 
 <body>
 
-<h2>🔥 Reelocash Login</h2>
-
-<input type="email" id="email" placeholder="Enter Email"><br>
-<input type="password" id="password" placeholder="Enter Password"><br>
-
-<button class="btn" onclick="signup()">Signup</button>
-<button class="btn" onclick="login()">Login</button>
-
-<p id="msg"></p>
-
-<hr style="width:90%;border:1px solid rgba(255,255,255,0.15);">
-
-<h3>🎬 Watch Reels & Earn 💰</h3>
-
-<div class="box">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-2895875871668188"
-       data-ad-slot="6015688161"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+<div class="topbar">
+<div>UID: <span id="uid">-</span></div>
+<div>₹ <span id="wallet">0</span></div>
 </div>
 
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+<div class="box" id="loginBox">
+<h3>Login / Signup</h3>
+<input id="email" placeholder="Email"><br>
+<input id="pass" placeholder="Password"><br>
+<input id="ref" placeholder="Referral code (optional)">
+<button class="btn" onclick="signup()">Signup</button>
+<button class="btn" onclick="login()">Login</button>
+<p id="msg"></p>
+</div>
 
-<button class="btn" onclick="openReel(0)">▶ Reel 1</button>
-<button class="btn" onclick="openReel(1)">▶ Reel 2</button>
-<button class="btn" onclick="openReel(2)">▶ Reel 3</button>
-<button class="btn" onclick="openReel(3)">▶ Reel 4</button>
-<button class="btn" onclick="openReel(4)">▶ Reel 5</button>
-<button class="btn" onclick="openReel(5)">▶ Reel 6</button>
-<button class="btn" onclick="openReel(6)">▶ Reel 7</button>
-<button class="btn" onclick="openReel(7)">▶ Reel 8</button>
-<button class="btn" onclick="openReel(8)">▶ Reel 9</button>
-<button class="btn" onclick="openReel(9)">▶ Reel 10</button>
-<button class="btn" onclick="openReel(10)">▶ Reel 11</button>
-<button class="btn" onclick="openReel(11)">▶ Reel 12</button>
+<div id="main" style="display:none">
+
+<div class="box">
+<h3>Your Referral</h3>
+<p id="refCode"></p>
+<p id="refLink"></p>
+<button class="btn" onclick="copyRef()">Copy</button>
+</div>
+
+<div class="box">
+<h2>Welcome to Reelocash</h2>
+<p>You can earn money by watching reels</p>
+<p>More update join our channel or group</p>
+
+<button class="btn" onclick="openLink('https://t.me/reelocash')">Join Channel</button>
+<button class="btn" onclick="openLink('https://t.me/officialreelocash')">Join Group</button>
+</div>
+
+<div class="box">
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-2895875871668188"
+data-ad-slot="6015688161"
+data-ad-format="auto"></ins>
+</div>
+
+<div class="box">
+<h3>Watch Reels</h3>
+
+<button class="reel-btn" onclick="openReel(0)">Reel 1</button>
+<button class="reel-btn" onclick="openReel(1)">Reel 2</button>
+<button class="reel-btn" onclick="openReel(2)">Reel 3</button>
+<button class="reel-btn" onclick="openReel(3)">Reel 4</button>
+<button class="reel-btn" onclick="openReel(4)">Reel 5</button>
+<button class="reel-btn" onclick="openReel(5)">Reel 6</button>
+<button class="reel-btn" onclick="openReel(6)">Reel 7</button>
+<button class="reel-btn" onclick="openReel(7)">Reel 8</button>
+<button class="reel-btn" onclick="openReel(8)">Reel 9</button>
+<button class="reel-btn" onclick="openReel(9)">Reel 10</button>
+<button class="reel-btn" onclick="openReel(10)">Reel 11</button>
+<button class="reel-btn" onclick="openReel(11)">Reel 12</button>
+
+</div>
+
+<div class="box">
+<h3>Withdraw</h3>
+<input id="upi" placeholder="Enter your UPI ID">
+<input id="amount" placeholder="Amount">
+<button class="btn" onclick="withdraw()">Withdraw</button>
+</div>
+
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,onAuthStateChanged }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, query, where, getDocs }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
-  authDomain: "reelocash.firebaseapp.com",
-  projectId: "reelocash",
-  storageBucket: "reelocash.firebasestorage.app",
-  messagingSenderId: "134046729864",
-  appId: "1:134046729864:web:7cea62a512f3141155013d"
-};
+const app = initializeApp({
+apiKey:"AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
+authDomain:"reelocash.firebaseapp.com",
+projectId:"reelocash",
+storageBucket:"reelocash.firebasestorage.app",
+messagingSenderId:"134046729864",
+appId:"1:134046729864:web:7cea62a512f3141155013d"
+});
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const auth = getAuth();
+const db = getFirestore();
 
-window.signup = function () {
-  const email = document.getElementById("email").value.trim();
-  const pass = document.getElementById("password").value.trim();
+let uid="";
 
-  if (!email || !pass) {
-    document.getElementById("msg").innerText = "Email aur password dalo";
-    return;
-  }
-
-  createUserWithEmailAndPassword(auth, email, pass)
-    .then(() => {
-      document.getElementById("msg").innerText = "Signup Success ✅";
-    })
-    .catch(err => {
-      document.getElementById("msg").innerText = err.message;
-    });
+function genCode(){
+return "REF"+Math.random().toString(36).substring(2,8).toUpperCase();
 }
 
-window.login = function () {
-  const email = document.getElementById("email").value.trim();
-  const pass = document.getElementById("password").value.trim();
+async function createUser(user,ref){
+let refCode=genCode();
 
-  if (!email || !pass) {
-    document.getElementById("msg").innerText = "Email aur password dalo";
-    return;
-  }
+await setDoc(doc(db,"users",user.uid),{
+wallet:0,
+referralCode:refCode,
+referredBy:ref||""
+});
 
-  signInWithEmailAndPassword(auth, email, pass)
-    .then(() => {
-      document.getElementById("msg").innerText = "Login Success ✅";
-    })
-    .catch(err => {
-      document.getElementById("msg").innerText = err.message;
-    });
+if(ref){
+let q=query(collection(db,"users"),where("referralCode","==",ref));
+let snap=await getDocs(q);
+if(!snap.empty){
+let docu=snap.docs[0];
+let data=docu.data();
+await updateDoc(doc(db,"users",docu.id),{
+wallet:(data.wallet||0)+5
+});
 }
-</script>
+}
+}
 
-<script>
-const reels = [
-  "https://www.instagram.com/reel/DWMdSL0k_Pj/",
-  "https://www.instagram.com/reel/DLQ62B0S4Gu/",
-  "https://www.instagram.com/reel/DWY9J2WkaTy/",
-  "https://www.instagram.com/reel/DWeNkWYEV5a/",
-  "https://www.instagram.com/reel/DWbuyUfEwIW/",
-  "https://www.instagram.com/reel/DWWiUlJkQNK/",
-  "https://www.instagram.com/reel/DWUOP0gE6tq/",
-  "https://www.instagram.com/reel/DWRRPu0iBEp/",
-  "https://www.instagram.com/reel/DWOp86DEZlS/",
-  "https://www.instagram.com/reel/DWIy8vPEZfq/",
-  "https://www.instagram.com/reel/DWDYV3mkduC/",
-  "https://www.instagram.com/reel/DWA2MyGkQtQ/"
+window.signup=async()=>{
+let e=email.value;
+let p=pass.value;
+let r=ref.value;
+let u=await createUserWithEmailAndPassword(auth,e,p);
+await createUser(u.user,r);
+msg.innerText="Signup done";
+}
+
+window.login=async()=>{
+let e=email.value;
+let p=pass.value;
+await signInWithEmailAndPassword(auth,e,p);
+msg.innerText="Login done";
+}
+
+onAuthStateChanged(auth,async(user)=>{
+if(user){
+uid=user.uid;
+document.getElementById("uid").innerText=uid;
+
+let d=await getDoc(doc(db,"users",uid));
+let data=d.data();
+
+document.getElementById("wallet").innerText=data.wallet||0;
+document.getElementById("refCode").innerText=data.referralCode;
+document.getElementById("refLink").innerText=location.href+"?ref="+data.referralCode;
+
+loginBox.style.display="none";
+main.style.display="block";
+}
+});
+
+window.copyRef=()=>{
+navigator.clipboard.writeText(refLink.innerText);
+alert("Copied");
+}
+
+window.openLink=(l)=>window.open(l);
+
+window.openReel=(i)=>{
+let r=[
+"https://www.instagram.com/reel/DWMdSL0k_Pj/",
+"https://www.instagram.com/reel/DLQ62B0S4Gu/",
+"https://www.instagram.com/reel/DWY9J2WkaTy/",
+"https://www.instagram.com/reel/DWeNkWYEV5a/",
+"https://www.instagram.com/reel/DWbuyUfEwIW/",
+"https://www.instagram.com/reel/DWWiUlJkQNK/",
+"https://www.instagram.com/reel/DWUOP0gE6tq/",
+"https://www.instagram.com/reel/DWRRPu0iBEp/",
+"https://www.instagram.com/reel/DWOp86DEZlS/",
+"https://www.instagram.com/reel/DWIy8vPEZfq/",
+"https://www.instagram.com/reel/DWDYV3mkduC/",
+"https://www.instagram.com/reel/DWA2MyGkQtQ/"
 ];
+window.open(r[i]);
+}
 
-function openReel(i){
-  window.open(reels[i], "_blank");
+window.withdraw=async()=>{
+let u=upi.value;
+let a=amount.value;
+await addDoc(collection(db,"withdraw"),{
+uid:uid,
+upi:u,
+amount:a
+});
+alert("Request sent");
 }
 </script>
 
