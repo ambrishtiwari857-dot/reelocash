@@ -1,306 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reelocash</title>
-
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895875871668188"
-    crossorigin="anonymous"></script>
+     crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      background:#0b1a3c;
+      color:white;
+      text-align:center;
+      font-family:sans-serif;
+      margin:0;
+      padding:20px 0;
+    }
+    input {
+      padding:12px;
+      margin:6px;
+      width:85%;
+      max-width:350px;
+      border:none;
+      border-radius:8px;
+    }
+    .btn {
+      display:block;
+      width:85%;
+      max-width:350px;
+      margin:10px auto;
+      padding:15px;
+      background:#2f66ff;
+      border:none;
+      border-radius:12px;
+      color:white;
+      font-size:16px;
+    }
+    #msg {
+      min-height: 24px;
+    }
+    .box {
+      width:90%;
+      max-width:500px;
+      margin:15px auto;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="app-wrap">
-    <div class="topbar">
-      <div>
-        <div class="brand-badge">Reelocash</div>
-        <h2>Welcome to Reelocash</h2>
-      </div>
 
-      <button class="wallet-box" onclick="toggleWithdraw()">
-        <span>💰 Wallet</span>
-        <strong>₹ <span id="walletAmount">0</span></strong>
-      </button>
-    </div>
+<h2>🔥 Reelocash Login</h2>
 
-    <div class="hero-card">
-      <h1>You can earn money by completing the task</h1>
-      <p>Open reels, submit screenshot proof, wait for admin review, then request withdrawal.</p>
-    </div>
+<input type="email" id="email" placeholder="Enter Email"><br>
+<input type="password" id="password" placeholder="Enter Password"><br>
 
-    <div class="panel ad-panel">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-2895875871668188"
-           data-ad-slot="6015688161"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-    </div>
+<button class="btn" onclick="signup()">Signup</button>
+<button class="btn" onclick="login()">Login</button>
 
-    <div class="main-grid">
-      <div>
-        <div class="panel">
-          <h3>Open Reels</h3>
-          <p class="muted">Tap any reel card to open content.</p>
+<p id="msg"></p>
 
-          <div class="content-grid">
-            <a class="content-card" href="https://www.instagram.com/reel/DWMdSL0k_Pj/?igsh=eTJkNHUyODFzbTF6" target="_blank">▶ Reel 1</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DLQ62B0S4Gu/?igsh=bmo1eGdya2V0OGdj" target="_blank">▶ Reel 2</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWY9J2WkaTy/?igsh=MjM3Y3o2ejFoY29h" target="_blank">▶ Reel 3</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWeNkWYEV5a/?igsh=enFzMnM4bncwZHlp" target="_blank">▶ Reel 4</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWbuyUfEwIW/?igsh=bHZxdjlxa2E1aWt0" target="_blank">▶ Reel 5</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWWiUlJkQNK/?igsh=eXBlemNwNGhldWd0" target="_blank">▶ Reel 6</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWUOP0gE6tq/?igsh=YjlsenliZnUxOTV5" target="_blank">▶ Reel 7</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWRRPu0iBEp/?igsh=MXU5aTN1MndmcnNpcw==" target="_blank">▶ Reel 8</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWOp86DEZlS/?igsh=Y2lxemh2enZ3MG9m" target="_blank">▶ Reel 9</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWIy8vPEZfq/?igsh=OTE4bDFqcWx0OHBt" target="_blank">▶ Reel 10</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWDYV3mkduC/?igsh=czBwNHN1YWRlOHVy" target="_blank">▶ Reel 11</a>
-            <a class="content-card" href="https://www.instagram.com/reel/DWA2MyGkQtQ/?igsh=a3kyYmI1dnZwZzBx" target="_blank">▶ Reel 12</a>
-          </div>
-        </div>
+<hr style="width:90%;border:1px solid rgba(255,255,255,0.15);">
 
-        <div class="panel">
-          <h3>Send Proof</h3>
-          <p class="muted">Upload screenshot and enter proof details for admin review.</p>
+<h3>🎬 Watch Reels & Earn 💰</h3>
 
-          <div class="input-wrap">
-            <label class="label">Task Title</label>
-            <input id="taskTitle" placeholder="Enter task title" />
-          </div>
+<div class="box">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-2895875871668188"
+       data-ad-slot="6015688161"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div>
 
-          <div class="input-wrap">
-            <label class="label">Reward Amount</label>
-            <input id="taskReward" type="number" placeholder="Enter reward amount" />
-          </div>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
-          <div class="input-wrap">
-            <label class="label">Upload Screenshot</label>
-            <input id="screenshot" type="file" accept="image/*" />
-          </div>
+<button class="btn" onclick="openReel(0)">▶ Reel 1</button>
+<button class="btn" onclick="openReel(1)">▶ Reel 2</button>
+<button class="btn" onclick="openReel(2)">▶ Reel 3</button>
+<button class="btn" onclick="openReel(3)">▶ Reel 4</button>
+<button class="btn" onclick="openReel(4)">▶ Reel 5</button>
+<button class="btn" onclick="openReel(5)">▶ Reel 6</button>
+<button class="btn" onclick="openReel(6)">▶ Reel 7</button>
+<button class="btn" onclick="openReel(7)">▶ Reel 8</button>
+<button class="btn" onclick="openReel(8)">▶ Reel 9</button>
+<button class="btn" onclick="openReel(9)">▶ Reel 10</button>
+<button class="btn" onclick="openReel(10)">▶ Reel 11</button>
+<button class="btn" onclick="openReel(11)">▶ Reel 12</button>
 
-          <div class="input-wrap">
-            <label class="label">Proof Details</label>
-            <textarea id="proofText" placeholder="Write proof details here..."></textarea>
-          </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-          <button class="btn btn-primary" id="submitProofBtn">Submit Proof</button>
-          <div id="proofStatus" class="status-box hidden-box"></div>
-        </div>
-      </div>
+const firebaseConfig = {
+  apiKey: "AIzaSyCfCPqRhGyL7cmpICldCZChx2cyVe7P9Ww",
+  authDomain: "reelocash.firebaseapp.com",
+  projectId: "reelocash",
+  storageBucket: "reelocash.firebasestorage.app",
+  messagingSenderId: "134046729864",
+  appId: "1:134046729864:web:7cea62a512f3141155013d"
+};
 
-      <div>
-        <div class="panel" id="withdrawSection" style="display:none;">
-          <h3>Withdrawal</h3>
-          <p class="muted">Enter your UPI ID and amount to request withdrawal.</p>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-          <div class="input-wrap">
-            <label class="label">Enter Your UPI ID</label>
-            <input id="upiId" placeholder="Enter your UPI ID" />
-          </div>
+window.signup = function () {
+  const email = document.getElementById("email").value.trim();
+  const pass = document.getElementById("password").value.trim();
 
-          <div class="input-wrap">
-            <label class="label">Amount</label>
-            <input id="withdrawAmount" type="number" placeholder="Enter amount" />
-          </div>
+  if (!email || !pass) {
+    document.getElementById("msg").innerText = "Email aur password dalo";
+    return;
+  }
 
-          <button class="btn btn-success" id="withdrawBtn">Request Withdrawal</button>
-          <div id="withdrawStatus" class="status-box hidden-box"></div>
-        </div>
-
-        <div class="panel">
-          <h3>Latest Status</h3>
-          <div id="latestStatus" class="status-box">No updates yet.</div>
-        </div>
-
-        <div class="panel">
-          <h3>Activity</h3>
-          <div id="historyBox" class="history-list">Loading...</div>
-        </div>
-
-        <div class="panel">
-          <a href="admin.html" class="enter-btn">Open Admin Panel</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
-  <script src="firebase-config.js"></script>
-
-  <script>
-    let deviceId = localStorage.getItem("deviceId");
-    if (!deviceId) {
-      deviceId = "user_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
-      localStorage.setItem("deviceId", deviceId);
-    }
-
-    let currentUserData = { wallet: 0 };
-
-    function showBox(id, text, color = "") {
-      const el = document.getElementById(id);
-      el.classList.remove("hidden-box");
-      el.textContent = text;
-      if (color) el.style.color = color;
-    }
-
-    function toggleWithdraw() {
-      const section = document.getElementById("withdrawSection");
-      section.style.display = section.style.display === "none" ? "block" : "none";
-    }
-
-    async function ensureUser() {
-      const userRef = db.collection("users").doc(deviceId);
-      const userDoc = await userRef.get();
-
-      if (!userDoc.exists) {
-        await userRef.set({
-          deviceId,
-          role: "user",
-          wallet: 0,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      }
-
-      const refreshed = await userRef.get();
-      currentUserData = refreshed.data() || { wallet: 0 };
-      document.getElementById("walletAmount").textContent = currentUserData.wallet || 0;
-    }
-
-    async function loadHistory() {
-      const box = document.getElementById("historyBox");
-      let html = "";
-
-      const tasksSnap = await db.collection("tasks").where("userId", "==", deviceId).get();
-      tasksSnap.forEach(doc => {
-        const d = doc.data();
-        html += `<div class="history-item">Task: ${d.title} | ₹${d.reward} | ${d.status}</div>`;
-      });
-
-      const withdrawalsSnap = await db.collection("withdrawals").where("userId", "==", deviceId).get();
-      withdrawalsSnap.forEach(doc => {
-        const d = doc.data();
-        html += `<div class="history-item">Withdrawal: ₹${d.amount} | ${d.status}</div>`;
-      });
-
-      box.innerHTML = html || "No activity yet.";
-    }
-
-    async function loadLatestStatus() {
-      const statusBox = document.getElementById("latestStatus");
-      let latest = "No updates yet.";
-
-      const tasksSnap = await db.collection("tasks").where("userId", "==", deviceId).get();
-      tasksSnap.forEach(doc => {
-        const d = doc.data();
-        if (d.adminMessage) latest = d.adminMessage;
-      });
-
-      const withdrawalsSnap = await db.collection("withdrawals").where("userId", "==", deviceId).get();
-      withdrawalsSnap.forEach(doc => {
-        const d = doc.data();
-        if (d.adminMessage) latest = d.adminMessage;
-      });
-
-      statusBox.textContent = latest;
-
-      const userDoc = await db.collection("users").doc(deviceId).get();
-      currentUserData = userDoc.data() || { wallet: 0 };
-      document.getElementById("walletAmount").textContent = currentUserData.wallet || 0;
-    }
-
-    document.getElementById("submitProofBtn").addEventListener("click", async () => {
-      const title = document.getElementById("taskTitle").value.trim();
-      const reward = Number(document.getElementById("taskReward").value);
-      const proof = document.getElementById("proofText").value.trim();
-      const file = document.getElementById("screenshot").files[0];
-
-      if (!title || !reward || !proof || !file) {
-        showBox("proofStatus", "Please fill all fields and upload screenshot.", "#ffb4b4");
-        return;
-      }
-
-      try {
-        showBox("proofStatus", "Uploading screenshot...");
-
-        const ext = file.name.split(".").pop();
-        const path = `proofs/${deviceId}/${Date.now()}.${ext}`;
-        const snap = await storage.ref(path).put(file);
-        const screenshotUrl = await snap.ref.getDownloadURL();
-
-        await db.collection("tasks").add({
-          userId: deviceId,
-          title,
-          reward,
-          proof,
-          screenshotUrl,
-          status: "pending",
-          adminMessage: "Proof submitted successfully. Waiting for verification.",
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        document.getElementById("taskTitle").value = "";
-        document.getElementById("taskReward").value = "";
-        document.getElementById("proofText").value = "";
-        document.getElementById("screenshot").value = "";
-
-        showBox("proofStatus", "Proof submitted successfully. Waiting for verification.", "#b7ffca");
-        loadHistory();
-        loadLatestStatus();
-      } catch (e) {
-        showBox("proofStatus", e.message, "#ffb4b4");
-      }
+  createUserWithEmailAndPassword(auth, email, pass)
+    .then(() => {
+      document.getElementById("msg").innerText = "Signup Success ✅";
+    })
+    .catch(err => {
+      document.getElementById("msg").innerText = err.message;
     });
+}
 
-    document.getElementById("withdrawBtn").addEventListener("click", async () => {
-      const upiId = document.getElementById("upiId").value.trim();
-      const amount = Number(document.getElementById("withdrawAmount").value);
+window.login = function () {
+  const email = document.getElementById("email").value.trim();
+  const pass = document.getElementById("password").value.trim();
 
-      if (!upiId || !amount) {
-        showBox("withdrawStatus", "Please enter your UPI ID and amount.", "#ffb4b4");
-        return;
-      }
+  if (!email || !pass) {
+    document.getElementById("msg").innerText = "Email aur password dalo";
+    return;
+  }
 
-      if (amount < 5) {
-        showBox("withdrawStatus", "Minimum withdrawal is ₹5.", "#ffb4b4");
-        return;
-      }
-
-      if (amount > (currentUserData.wallet || 0)) {
-        showBox("withdrawStatus", "Insufficient wallet balance.", "#ffb4b4");
-        return;
-      }
-
-      await db.collection("withdrawals").add({
-        userId: deviceId,
-        upiId,
-        amount,
-        status: "pending",
-        adminMessage: "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      document.getElementById("upiId").value = "";
-      document.getElementById("withdrawAmount").value = "";
-
-      showBox("withdrawStatus", "Please wait 5 to 6 minutes. Your withdrawal is under processing. This may take time.", "#b7ffca");
-      loadHistory();
-      loadLatestStatus();
+  signInWithEmailAndPassword(auth, email, pass)
+    .then(() => {
+      document.getElementById("msg").innerText = "Login Success ✅";
+    })
+    .catch(err => {
+      document.getElementById("msg").innerText = err.message;
     });
+}
+</script>
 
-    async function init() {
-      await ensureUser();
-      await loadHistory();
-      await loadLatestStatus();
-    }
+<script>
+const reels = [
+  "https://www.instagram.com/reel/DWMdSL0k_Pj/",
+  "https://www.instagram.com/reel/DLQ62B0S4Gu/",
+  "https://www.instagram.com/reel/DWY9J2WkaTy/",
+  "https://www.instagram.com/reel/DWeNkWYEV5a/",
+  "https://www.instagram.com/reel/DWbuyUfEwIW/",
+  "https://www.instagram.com/reel/DWWiUlJkQNK/",
+  "https://www.instagram.com/reel/DWUOP0gE6tq/",
+  "https://www.instagram.com/reel/DWRRPu0iBEp/",
+  "https://www.instagram.com/reel/DWOp86DEZlS/",
+  "https://www.instagram.com/reel/DWIy8vPEZfq/",
+  "https://www.instagram.com/reel/DWDYV3mkduC/",
+  "https://www.instagram.com/reel/DWA2MyGkQtQ/"
+];
 
-    init();
-  </script>
+function openReel(i){
+  window.open(reels[i], "_blank");
+}
+</script>
+
 </body>
 </html>
